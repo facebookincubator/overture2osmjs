@@ -20,7 +20,7 @@ Two challenges remain:
 | Benjamin Clark     | clarkbed@meta.com   | Rapid Editor & OSM Software Engineer (Advisor)          |
 | Peter Dosev        | pdosev@gmail.com    | MLH Fellow                                              |
 | Opeyemi R Oduyemi  | yhermii@gmail.com   | MLH Fellow                                              |
-| Alex Wikes         | [Alex Wikes' email] | Pod Leader                                              |
+| Alex Wikes         | aw@awilkes.com      | Pod Leader                                              |
 
 ---
 
