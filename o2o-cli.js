@@ -20,9 +20,7 @@ if (!filename) {console.log("o2o-cli: Please enter file name") }
 else {
     try {
         const data = JSON.parse(await fs.readFile(filename, {encoding: 'utf-8'}));
-        for (const feature of data.features) {
-            console.log(`name=${feature.properties.names.primary}`);
-        }
+        overtureToOsmData(data);
     } catch(error) {
         console.error('File error:', error.message);
     }
