@@ -1,4 +1,11 @@
-## **Fall 2024 - Overture Data Dictionary Scope**
+# Overture to OSM Data Converter
+
+## Usage
+
+`node o2o-cli.js <filename>`
+Process an Overture .geojson file. Currently reads out names of points of interest
+
+## **Scope Document**
 
 ### **Project Summary**
 The **Overture Maps Foundation** maintains a global map dataset, including a subset of Places data that can enhance **OpenStreetMap (OSM)**. The goal of this project is to convert Overture data to match the OSM schema, enabling seamless integration.
