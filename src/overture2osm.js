@@ -4,4 +4,4 @@ function overtureToOsmData(overtureData) {
   }
 }
 
-export {overtureToOsmData};
+export { overtureToOsmData };
