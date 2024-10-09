@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{ED5660A0-A522-9F2E-0935-F612E845EAAB}</ProjectGuid>
+    <ProjectGuid>{89CD53A1-797A-FC02-7243-6BDD99C27DE5}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>overture</RootNamespace>
+    <RootNamespace>overtureToOsmData</RootNamespace>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
     <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
@@ -48,8 +48,8 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\include\node;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\src;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\deps\openssl\config;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\deps\openssl\openssl\include;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\deps\uv\include;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\deps\zlib;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalOptions>/Zc:__cplusplus -std:c++20 /Zm2000 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\include\node;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\src;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\openssl\config;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\openssl\openssl\include;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\uv\include;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\zlib;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\v8\include;..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/Zc:__cplusplus -std:c++17 %(AdditionalOptions)</AdditionalOptions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -60,7 +60,7 @@
       <OmitFramePointers>false</OmitFramePointers>
       <Optimization>Disabled</Optimization>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=overture;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;_GLIBCXX_USE_CXX11_ABI=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;NOMINMAX;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;DEBUG;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=overtureToOsmData;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;V8_DEPRECATION_WARNINGS;V8_IMMINENT_DEPRECATION_WARNINGS;_GLIBCXX_USE_CXX11_ABI=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;DEBUG;_DEBUG;V8_ENABLE_CHECKS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <StringPooling>true</StringPooling>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -72,7 +72,7 @@
       <AdditionalOptions>/LTCG:INCREMENTAL %(AdditionalOptions)</AdditionalOptions>
     </Lib>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\Opeyemi Oduyemi\\AppData\\Local\\node-gyp\\Cache\\22.9.0\\x64\\node.lib&quot;</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\Opeyemi Oduyemi\\AppData\\Local\\node-gyp\\Cache\\18.20.4\\x64\\node.lib&quot;</AdditionalDependencies>
       <AdditionalOptions>/LTCG:INCREMENTAL /ignore:4199 %(AdditionalOptions)</AdditionalOptions>
       <DelayLoadDLLs>node.exe;%(DelayLoadDLLs)</DelayLoadDLLs>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -84,14 +84,14 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\include\node;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\src;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\deps\openssl\config;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\deps\openssl\openssl\include;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\deps\uv\include;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\deps\zlib;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=overture;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;_GLIBCXX_USE_CXX11_ABI=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;NOMINMAX;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;DEBUG;_DEBUG;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\include\node;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\src;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\openssl\config;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\openssl\openssl\include;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\uv\include;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\zlib;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\v8\include;..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=overtureToOsmData;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;V8_DEPRECATION_WARNINGS;V8_IMMINENT_DEPRECATION_WARNINGS;_GLIBCXX_USE_CXX11_ABI=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;DEBUG;_DEBUG;V8_ENABLE_CHECKS;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\include\node;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\src;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\deps\openssl\config;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\deps\openssl\openssl\include;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\deps\uv\include;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\deps\zlib;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalOptions>/Zc:__cplusplus -std:c++20 /Zm2000 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\include\node;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\src;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\openssl\config;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\openssl\openssl\include;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\uv\include;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\zlib;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\v8\include;..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/Zc:__cplusplus -std:c++17 %(AdditionalOptions)</AdditionalOptions>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
       <DisableSpecificWarnings>4351;4355;4800;4251;4275;4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -104,7 +104,7 @@
       <OmitFramePointers>true</OmitFramePointers>
       <Optimization>Full</Optimization>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=overture;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;_GLIBCXX_USE_CXX11_ABI=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;NOMINMAX;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=overtureToOsmData;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;V8_DEPRECATION_WARNINGS;V8_IMMINENT_DEPRECATION_WARNINGS;_GLIBCXX_USE_CXX11_ABI=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <StringPooling>true</StringPooling>
@@ -117,7 +117,7 @@
       <AdditionalOptions>/LTCG:INCREMENTAL %(AdditionalOptions)</AdditionalOptions>
     </Lib>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\Opeyemi Oduyemi\\AppData\\Local\\node-gyp\\Cache\\22.9.0\\x64\\node.lib&quot;</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\Opeyemi Oduyemi\\AppData\\Local\\node-gyp\\Cache\\18.20.4\\x64\\node.lib&quot;</AdditionalDependencies>
       <AdditionalOptions>/LTCG:INCREMENTAL /ignore:4199 %(AdditionalOptions)</AdditionalOptions>
       <DelayLoadDLLs>node.exe;%(DelayLoadDLLs)</DelayLoadDLLs>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -129,8 +129,8 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\include\node;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\src;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\deps\openssl\config;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\deps\openssl\openssl\include;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\deps\uv\include;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\deps\zlib;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\22.9.0\deps\v8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=overture;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;_GLIBCXX_USE_CXX11_ABI=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;NOMINMAX;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\include\node;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\src;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\openssl\config;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\openssl\openssl\include;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\uv\include;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\zlib;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\v8\include;..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=overtureToOsmData;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;V8_DEPRECATION_WARNINGS;V8_IMMINENT_DEPRECATION_WARNINGS;_GLIBCXX_USE_CXX11_ABI=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -140,7 +140,7 @@
     <ClCompile Include="..\src\bindings\binding.cc">
       <ObjectFileName>$(IntDir)\src\bindings\binding.obj</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="C:\Users\Opeyemi Oduyemi\AppData\Roaming\nvm\v22.9.0\node_modules\npm\node_modules\node-gyp\src\win_delay_load_hook.cc"/>
+    <ClCompile Include="C:\Users\Opeyemi Oduyemi\AppData\Roaming\nvm\v18.20.4\node_modules\node-gyp\src\win_delay_load_hook.cc"/>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
   <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets"/>

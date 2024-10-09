@@ -1,68 +1,35 @@
 #include <nan.h>
-#include <vector>
+#include <iostream>
 #include <string>
-#include <nlohmann/json.hpp> 
+#include <nlohmann/json.hpp>  
 
 using json = nlohmann::json;
 
-void ConvertToOSM(const Nan::FunctionCallbackInfo<v8::Value>& info) {
-    if (info.Length() < 1) {
-        Nan::ThrowTypeError("Wrong number of arguments");
+void ConvertSingleFeature(const Nan::FunctionCallbackInfo<v8::Value>& info) {
+    if (info.Length() < 1 || !info[0]->IsObject()) {
+        Nan::ThrowTypeError("First argument must be a JSON object.");
         return;
     }
 
-    if (!info[0]->IsString()) {
-        Nan::ThrowTypeError("Expected a string as argument");
-        return;
-    }
+    v8::Local<v8::Object> geoJsonFeature = info[0]->ToObject(Nan::GetCurrentContext()).ToLocalChecked();
+    Nan::Utf8String utf8Value(geoJsonFeature);
 
-    v8::String::Utf8Value input(info[0]->ToString(Nan::GetCurrentContext()).ToLocalChecked());
-    std::string overtureData = std::string(*input);
-    // Parse Overture GeoJSON data
-    json geoJsonData = json::parse(overtureData);
-    // Create an OSM-compatible JSON object
-    json osmData;
-    osmData["version"] = "0.6"; // OSM version
-    osmData["generator"] = "Overture to OSM Converter";
+    std::string geoJsonStr(*utf8Value);
+    json featureJson = json::parse(geoJsonStr);
 
-    std::vector<json> nodes;
+    // Conversion to OSM format
+    json osmObject;
+    osmObject["type"] = "node"; 
+    osmObject["id"] = featureJson["id"]; 
 
-    for (const auto& feature : geoJsonData["features"]) {
-        json osmNode;
-        osmNode["type"] = "node"; 
-        osmNode["id"] = -static_cast<int>(nodes.size()) - 1; 
 
-        // Setting coordinates
-        if (feature.contains("geometry") && feature["geometry"].contains("coordinates")) {
-            osmNode["lat"] = feature["geometry"]["coordinates"][1]; // Latitude
-            osmNode["lon"] = feature["geometry"]["coordinates"][0]; // Longitude
-        }
-
-        // Setting tags based on properties
-        if (feature.contains("properties")) {
-            const auto& properties = feature["properties"];
-            if (properties.contains("name")) {
-                osmNode["tags"]["name"] = properties["name"];
-            }
-            if (properties.contains("type")) {
-                osmNode["tags"]["amenity"] = properties["type"]; 
-            }
-        }
-
-        nodes.push_back(osmNode);
-    }
-
-    // Setting the nodes in the OSM data
-    osmData["elements"] = nodes;
-
-    // Converting osmData back to string to return to Node.js
-    std::string osmDataString = osmData.dump();
-    info.GetReturnValue().Set(Nan::New(osmDataString).ToLocalChecked());
+    std::string osmStr = osmObject.dump();
+    info.GetReturnValue().Set(Nan::New(osmStr).ToLocalChecked());
 }
 
 void Init(v8::Local<v8::Object> exports) {
-    exports->Set(Nan::New("convertToOSM").ToLocalChecked(),
-                 Nan::New<v8::FunctionTemplate>(ConvertToOSM)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
+    exports->Set(Nan::New("convertSingleFeature").ToLocalChecked(),
+                 Nan::New<v8::FunctionTemplate>(ConvertSingleFeature)->GetFunction(Nan::GetCurrentContext()).ToLocalChecked());
 }
 
-NODE_MODULE(overture_bindings, Init)
+NODE_MODULE(overture, Init)
