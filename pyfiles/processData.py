@@ -29,7 +29,6 @@ def geojson_to_osm(geojson_file, osm_file):
             osm_data.append('  </node>')
 
         elif geometry['type'] == 'Polygon':
-            # Convert polygons to ways (may need further processing)
             osm_data.append('  <way id="{}">'.format(properties.get('id', 0)))
             for coord in geometry['coordinates'][0]:  # Assuming it's the first ring
                 lat, lon = coord[1], coord[0]
