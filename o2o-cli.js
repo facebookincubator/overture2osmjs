@@ -1,7 +1,8 @@
-const overtureBindings = require('bindings')('overture');
+import bindings from 'bindings';
+const overtureBindings = bindings('overtureToOsmData');
 
 // Single GeoJSON feature conversion
-function convertSingleFeature(feature) {
+export function convertSingleFeature(feature) {
     try {
         const result = overtureBindings.convertSingleFeature(feature);
         return JSON.parse(result);
@@ -10,17 +11,12 @@ function convertSingleFeature(feature) {
     }
 }
 
-// Batch conversion 
-function convertBatchFeatures(features) {
+// Batch conversion of multiple GeoJSON features
+export function convertBatchFeatures(features) {
     try {
-        const result = overtureBindings.convertBatchFeatures(features);
-        return result.map(r => JSON.parse(r));
+        const result = overtureBindings.convertBatchFeatures(features); 
+        return JSON.parse(result);
     } catch (err) {
         console.error("Error converting batch features:", err);
     }
 }
-
-module.exports = {
-    convertSingleFeature,
-    convertBatchFeatures
-};

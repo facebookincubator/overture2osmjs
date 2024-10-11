@@ -1,4 +1,4 @@
-const { convertSingleFeature, convertBatchFeatures } = require('../o2o-cli');
+import { convertSingleFeature, convertBatchFeatures } from '../o2o-cli.js';
 
 // Single feature
 const geoJsonFeature = {

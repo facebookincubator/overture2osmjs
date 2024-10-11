@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2015
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "overtureToOsmData", "overtureToOsmData.vcxproj", "{89CD53A1-797A-FC02-7243-6BDD99C27DE5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "overtureToOsmData", "overtureToOsmData.vcxproj", "{93F78F96-1B9A-AF17-DEED-D3A8DB3A0EDC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,10 +8,10 @@ Global
 		Debug|x64 = Debug|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{89CD53A1-797A-FC02-7243-6BDD99C27DE5}.Release|x64.ActiveCfg = Release|x64
-		{89CD53A1-797A-FC02-7243-6BDD99C27DE5}.Release|x64.Build.0 = Release|x64
-		{89CD53A1-797A-FC02-7243-6BDD99C27DE5}.Debug|x64.ActiveCfg = Debug|x64
-		{89CD53A1-797A-FC02-7243-6BDD99C27DE5}.Debug|x64.Build.0 = Debug|x64
+		{93F78F96-1B9A-AF17-DEED-D3A8DB3A0EDC}.Release|x64.ActiveCfg = Release|x64
+		{93F78F96-1B9A-AF17-DEED-D3A8DB3A0EDC}.Release|x64.Build.0 = Release|x64
+		{93F78F96-1B9A-AF17-DEED-D3A8DB3A0EDC}.Debug|x64.ActiveCfg = Debug|x64
+		{93F78F96-1B9A-AF17-DEED-D3A8DB3A0EDC}.Debug|x64.Build.0 = Debug|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

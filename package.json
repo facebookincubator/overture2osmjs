@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "A module to convert Overture data to OpenStreetMap format.",
   "type": "module",
-  "main": "src/index.js",
+  "main": "api/index.js",
   "scripts": {
     "test": ""
   },
@@ -22,6 +22,8 @@
     "minimist": "^1.2.8"
   },
   "dependencies": {
-    "nan": "^2.20.0"
+    "bindings": "^1.5.0",
+    "nan": "^2.22.0",
+    "node-gyp": "^10.2.0"
   }
 }

@@ -1,6 +1,6 @@
-const express = require('express');
-const { exec } = require('child_process');
-const overtureToOsmData = require('./build/Release/overtureToOsmData');
+import express from 'express';
+import exec from 'child_process';
+import overtureToOsmData from './build/Release/overtureToOsmData.node';
 
 const app = express();
 const PORT = process.env.PORT || 3000;

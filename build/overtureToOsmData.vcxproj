@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{89CD53A1-797A-FC02-7243-6BDD99C27DE5}</ProjectGuid>
+    <ProjectGuid>{93F78F96-1B9A-AF17-DEED-D3A8DB3A0EDC}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>overtureToOsmData</RootNamespace>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
@@ -48,7 +48,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\include\node;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\src;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\openssl\config;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\openssl\openssl\include;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\uv\include;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\zlib;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\v8\include;..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\include\node;C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\src;C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\deps\openssl\config;C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\deps\openssl\openssl\include;C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\deps\uv\include;C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\deps\zlib;C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\deps\v8\include;..\node_modules\nan;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zc:__cplusplus -std:c++17 %(AdditionalOptions)</AdditionalOptions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <BufferSecurityCheck>true</BufferSecurityCheck>
@@ -72,7 +72,7 @@
       <AdditionalOptions>/LTCG:INCREMENTAL %(AdditionalOptions)</AdditionalOptions>
     </Lib>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\Opeyemi Oduyemi\\AppData\\Local\\node-gyp\\Cache\\18.20.4\\x64\\node.lib&quot;</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\Administrator\\AppData\\Local\\node-gyp\\Cache\\18.18.0\\x64\\node.lib&quot;</AdditionalDependencies>
       <AdditionalOptions>/LTCG:INCREMENTAL /ignore:4199 %(AdditionalOptions)</AdditionalOptions>
       <DelayLoadDLLs>node.exe;%(DelayLoadDLLs)</DelayLoadDLLs>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -84,13 +84,13 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\include\node;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\src;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\openssl\config;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\openssl\openssl\include;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\uv\include;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\zlib;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\v8\include;..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\include\node;C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\src;C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\deps\openssl\config;C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\deps\openssl\openssl\include;C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\deps\uv\include;C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\deps\zlib;C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\deps\v8\include;..\node_modules\nan;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=overtureToOsmData;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;V8_DEPRECATION_WARNINGS;V8_IMMINENT_DEPRECATION_WARNINGS;_GLIBCXX_USE_CXX11_ABI=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;DEBUG;_DEBUG;V8_ENABLE_CHECKS;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\include\node;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\src;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\openssl\config;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\openssl\openssl\include;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\uv\include;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\zlib;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\v8\include;..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\include\node;C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\src;C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\deps\openssl\config;C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\deps\openssl\openssl\include;C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\deps\uv\include;C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\deps\zlib;C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\deps\v8\include;..\node_modules\nan;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zc:__cplusplus -std:c++17 %(AdditionalOptions)</AdditionalOptions>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
@@ -117,7 +117,7 @@
       <AdditionalOptions>/LTCG:INCREMENTAL %(AdditionalOptions)</AdditionalOptions>
     </Lib>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\Opeyemi Oduyemi\\AppData\\Local\\node-gyp\\Cache\\18.20.4\\x64\\node.lib&quot;</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;DelayImp.lib;&quot;C:\\Users\\Administrator\\AppData\\Local\\node-gyp\\Cache\\18.18.0\\x64\\node.lib&quot;</AdditionalDependencies>
       <AdditionalOptions>/LTCG:INCREMENTAL /ignore:4199 %(AdditionalOptions)</AdditionalOptions>
       <DelayLoadDLLs>node.exe;%(DelayLoadDLLs)</DelayLoadDLLs>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -129,7 +129,7 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\include\node;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\src;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\openssl\config;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\openssl\openssl\include;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\uv\include;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\zlib;C:\Users\Opeyemi Oduyemi\AppData\Local\node-gyp\Cache\18.20.4\deps\v8\include;..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\include\node;C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\src;C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\deps\openssl\config;C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\deps\openssl\openssl\include;C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\deps\uv\include;C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\deps\zlib;C:\Users\Administrator\AppData\Local\node-gyp\Cache\18.18.0\deps\v8\include;..\node_modules\nan;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NODE_GYP_MODULE_NAME=overtureToOsmData;USING_UV_SHARED=1;USING_V8_SHARED=1;V8_DEPRECATION_WARNINGS=1;V8_DEPRECATION_WARNINGS;V8_IMMINENT_DEPRECATION_WARNINGS;_GLIBCXX_USE_CXX11_ABI=1;WIN32;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_HAS_EXCEPTIONS=0;OPENSSL_NO_PINSHARED;OPENSSL_THREADS;BUILDING_NODE_EXTENSION;HOST_BINARY=&quot;node.exe&quot;;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
@@ -140,7 +140,7 @@
     <ClCompile Include="..\src\bindings\binding.cc">
       <ObjectFileName>$(IntDir)\src\bindings\binding.obj</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="C:\Users\Opeyemi Oduyemi\AppData\Roaming\nvm\v18.20.4\node_modules\node-gyp\src\win_delay_load_hook.cc"/>
+    <ClCompile Include="C:\Users\Administrator\AppData\Roaming\npm\node_modules\node-gyp\src\win_delay_load_hook.cc"/>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
   <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.targets"/>
