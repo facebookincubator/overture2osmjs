@@ -1,20 +1,27 @@
 #!/usr/bin/env node
 import * as fs from 'node:fs/promises';
 import minimist from 'minimist';
+import pLimit from "p-limit";
+import { isGeoJSON } from 'geojson-validation';
+
+const limit = pLimit(5);
 
 const argv = minimist(process.argv.slice(2));
 
+// Help message
 if (argv.help) {
   console.log(`
     GeoJSON to OSM Data Converter
 
-    usage: o2o-cli <file.geojson> [file2.geojson] [file3.geojson]...
+    usage: o2o-cli <file.geojson> [file2.geojson] [file3.geojson]... [--output <console|file|both>]
 
-    o2o-cli <file.geojson>    Convert GeoJSON data to OSM format.
+    Options:
+      --output <console|file|both>   Specify output method (default: both)
   `);
 }
 
 const filenames = argv._;
+const outputOption = argv.output || 'both'; // Default output is 'both'
 
 if (filenames.length === 0) {
   console.log("o2o-cli: Please provide at least one file name.");
@@ -24,31 +31,34 @@ if (filenames.length === 0) {
     .catch((error) => console.error("Error during batch processing:", error.message));
 }
 
-/**
- * Process files using batch conversion for efficiency.
- * 
- * @param {Array<string>} filenames
- */
 async function processFilesWithBatching(filenames) {
   try {
-    await Promise.all(filenames.map(async (filename) => {
-      console.log(`Processing file: ${filename}`);
-      const data = JSON.parse(await fs.readFile(filename, { encoding: 'utf-8' }));
+    await Promise.all(filenames.map(filename => 
+      limit(async () => {
+        console.log(`Processing file: ${filename}`);
+        const data = JSON.parse(await fs.readFile(filename, { encoding: 'utf-8' }));
 
-      const osmData = convertBatchFeatures(data.features);
-      console.log(osmData);  
-    }));
+        // Validate GeoJSON format
+        if (!isGeoJSON(data)) {
+          throw new Error(`Invalid GeoJSON format in file: ${filename}`);
+        }
+
+        const osmData = convertBatchFeatures(data.features);
+        
+        // Output based on user preference
+        if (outputOption === 'console' || outputOption === 'both') {
+          console.log(osmData);
+        }
+        if (outputOption === 'file' || outputOption === 'both') {
+          await saveToFile(filename, osmData);
+        }
+      })
+    ));
   } catch (error) {
     console.error("Error during file processing:", error.message);
   }
 }
 
-/**
- * Converts a single GeoJSON feature to OSM format.
- * 
- * @param {object} feature - GeoJSON feature to convert.
- * @returns {object} - Converted OSM feature.
- */
 function convertSingleFeature(feature) {
   return {
     id: feature.id || generateOSMId(),
@@ -57,21 +67,16 @@ function convertSingleFeature(feature) {
   };
 }
 
-/**
- * Batch converts multiple GeoJSON features to OSM format.
- * 
- * @param {Array<object>} features 
- * @returns {Array<object>} 
- */
 function convertBatchFeatures(features) {
   return features.map(feature => convertSingleFeature(feature));
 }
 
-/**
- * Generates a unique OSM ID for the feature (dummy function).
- * 
- * @returns {number} - Generated OSM ID.
- */
 function generateOSMId() {
   return Math.floor(Math.random() * 1e6);  
+}
+
+async function saveToFile(filename, osmData) {
+  const outputFilename = filename.replace('.geojson', '.osm.json');
+  await fs.writeFile(outputFilename, JSON.stringify(osmData, null, 2), 'utf-8');
+  console.log(`Converted data saved to: ${outputFilename}`);
 }
