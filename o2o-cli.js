@@ -12,10 +12,10 @@ if (argv.help) {
   console.log(`
     GeoJSON to OSM Data Converter
 
-    usage: o2o-cli <file.geojson> [file2.geojson] [file3.geojson]... [--output <console|file|both>]
+    usage: o2o-cli <file.geojson> [file2.geojson] [file3.geojson]... [--output <console|file|both|xml>] 
 
     Options:
-      --output <console|file|both>   Specify output method (default: both)
+      --output <console|file|both|xml>   Specify output method (default: both, xml for OSM XML output)
   `);
 }
 
@@ -42,15 +42,25 @@ async function processFilesWithBatching(filenames) {
           console.log(`Processing file: ${filename}`);
           const data = JSON.parse(await fs.readFile(filename, { encoding: 'utf-8' }));
           validateGeoJSON(data);
+
           const osmData = convertBatchFeatures(data.features);
+          const osmXmlData = geojsonToOsmXml(data.features);
 
           // Output based on user preference
           if (outputOption === 'console' || outputOption === 'both') {
             console.log(osmData);
           }
 
+          if (outputOption === 'xml') {
+            console.log(osmXmlData);
+          }
+
           if (outputOption === 'file' || outputOption === 'both') {
             await saveToFile(filename, osmData);
+          }
+
+          if (outputOption === 'xml' || outputOption === 'both') {
+            await saveToXmlFile(filename, osmXmlData);
           }
         })
       )
@@ -61,7 +71,7 @@ async function processFilesWithBatching(filenames) {
 }
 
 /**
- * Converts an array of GeoJSON features to OSM format.
+ * Converts an array of GeoJSON features to OSM JSON format.
  * @param {Array} features - Array of GeoJSON features.
  * @returns {Array} - Array of converted OSM data.
  */
@@ -70,7 +80,7 @@ function convertBatchFeatures(features) {
 }
 
 /**
- * Single GeoJSON feature conversion to OSM format.
+ * Single GeoJSON feature conversion to OSM JSON format.
  * @param {object} feature - GeoJSON feature object.
  * @returns {object} - Converted OSM feature object.
  */
@@ -83,6 +93,40 @@ function convertSingleFeature(feature) {
 }
 
 /**
+ * Converts an array of GeoJSON features to OSM XML format.
+ * @param {Array} features - Array of GeoJSON features.
+ * @returns {string} - Converted OSM XML data as a string.
+ */
+function geojsonToOsmXml(features) {
+  let osmXmlData = `<?xml version="1.0" encoding="UTF-8"?>\n<osm version="0.6" generator="GeoJSONToOSM">\n`;
+
+  features.forEach((feature) => {
+    const geometry = feature.geometry;
+    const properties = feature.properties || {};
+
+    if (geometry.type === 'Point') {
+      osmXmlData += `  <node id="${properties.id || generateOSMId()}" lat="${geometry.coordinates[1]}" lon="${geometry.coordinates[0]}">\n`;
+      for (const [key, value] of Object.entries(properties)) {
+        osmXmlData += `    <tag k="${key}" v="${value}"/>\n`;
+      }
+      osmXmlData += '  </node>\n';
+    } else if (geometry.type === 'Polygon') {
+      osmXmlData += `  <way id="${properties.id || generateOSMId()}">\n`;
+      geometry.coordinates[0].forEach(([lon, lat]) => {
+        osmXmlData += `    <nd ref="${lat},${lon}"/>\n`;
+      });
+      for (const [key, value] of Object.entries(properties)) {
+        osmXmlData += `    <tag k="${key}" v="${value}"/>\n`;
+      }
+      osmXmlData += '  </way>\n';
+    }
+  });
+
+  osmXmlData += '</osm>';
+  return osmXmlData;
+}
+
+/**
  * Generates a random OSM ID if the feature does not have an ID.
  * @returns {number} - Randomly generated OSM ID.
  */
@@ -91,12 +135,23 @@ function generateOSMId() {
 }
 
 /**
- * Saves converted OSM data to a file.
+ * Saves converted OSM data to a file in JSON format.
  * @param {string} filename - Original filename to derive the output filename.
  * @param {Array} osmData - Converted OSM data to save.
  */
 async function saveToFile(filename, osmData) {
   const outputFilename = filename.replace('.geojson', '.osm.json');
   await fs.writeFile(outputFilename, JSON.stringify(osmData, null, 2), 'utf-8');
+  console.log(`Converted data saved to: ${outputFilename}`);
+}
+
+/**
+ * Saves converted OSM data to a file in XML format.
+ * @param {string} filename - Original filename to derive the output filename.
+ * @param {string} osmXmlData - Converted OSM XML data to save.
+ */
+async function saveToXmlFile(filename, osmXmlData) {
+  const outputFilename = filename.replace('.geojson', '.osm.xml');
+  await fs.writeFile(outputFilename, osmXmlData, 'utf-8');
   console.log(`Converted data saved to: ${outputFilename}`);
 }
