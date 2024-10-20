@@ -2,7 +2,7 @@
 import * as fs from 'node:fs/promises';
 import minimist from 'minimist';
 import pLimit from 'p-limit';
-import { validateGeoJSON } from './src/validate.js';
+import { validateGeoJSON } from './validate';
 
 const limit = pLimit(5);
 const argv = minimist(process.argv.slice(2));
