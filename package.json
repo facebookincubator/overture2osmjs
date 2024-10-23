@@ -20,5 +20,9 @@
   "devDependencies": {
     "esbuild": "^0.24.0",
     "minimist": "^1.2.8"
+  },
+  "dependencies": {
+    "geojson-validation": "^1.0.2",
+    "p-limit": "^6.1.0"
   }
 }

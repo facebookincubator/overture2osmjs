@@ -1,29 +1,82 @@
 #!/usr/bin/env node
 import * as fs from 'node:fs/promises';
-
-import {overtureToOSMData} from "./src/overture2osm.js";
 import minimist from 'minimist';
+import pLimit from "p-limit";
+import { isGeoJSON } from 'geojson-validation';
+
+const limit = pLimit(5);
 
 const argv = minimist(process.argv.slice(2));
-if (argv.help) {console.log(`
-Overture to OSM Data Converter
 
-usage: o2o-cli <file.geojson>
+// Help message
+if (argv.help) {
+  console.log(`
+    GeoJSON to OSM Data Converter
 
-o2o-cli <file.geojson>    Parse geojson data containing Overture places into OSM format
-`)}
+    usage: o2o-cli <file.geojson> [file2.geojson] [file3.geojson]... [--output <console|file|both>]
 
-// underscore is an array of positional arguments
-const filename = argv._[0];
-if (!filename) {console.log("o2o-cli: Please enter file name") }
-else {
-    try {
-        const data = JSON.parse(await fs.readFile(filename, {encoding: 'utf-8'}));
-        for (const feature of data.features) {
-            // just print to console for now
-            console.log(overtureToOSMData(feature));
+    Options:
+      --output <console|file|both>   Specify output method (default: both)
+  `);
+}
+
+const filenames = argv._;
+const outputOption = argv.output || 'both'; // Default output is 'both'
+
+if (filenames.length === 0) {
+  console.log("o2o-cli: Please provide at least one file name.");
+} else {
+  processFilesWithBatching(filenames)
+    .then(() => console.log("Batch processing completed successfully."))
+    .catch((error) => console.error("Error during batch processing:", error.message));
+}
+
+async function processFilesWithBatching(filenames) {
+  try {
+    await Promise.all(filenames.map(filename => 
+      limit(async () => {
+        console.log(`Processing file: ${filename}`);
+        const data = JSON.parse(await fs.readFile(filename, { encoding: 'utf-8' }));
+
+        // Validate GeoJSON format
+        if (!isGeoJSON(data)) {
+          throw new Error(`Invalid GeoJSON format in file: ${filename}`);
         }
-    } catch(error) {
-        console.error('File error:', error.message);
-    }
+
+        const osmData = convertBatchFeatures(data.features);
+        
+        // Output based on user preference
+        if (outputOption === 'console' || outputOption === 'both') {
+          console.log(osmData);
+        }
+        if (outputOption === 'file' || outputOption === 'both') {
+          await saveToFile(filename, osmData);
+        }
+      })
+    ));
+  } catch (error) {
+    console.error("Error during file processing:", error.message);
+  }
+}
+
+function convertSingleFeature(feature) {
+  return {
+    id: feature.id || generateOSMId(),
+    type: feature.geometry.type,
+    properties: feature.properties
+  };
+}
+
+function convertBatchFeatures(features) {
+  return features.map(feature => convertSingleFeature(feature));
+}
+
+function generateOSMId() {
+  return Math.floor(Math.random() * 1e6);  
+}
+
+async function saveToFile(filename, osmData) {
+  const outputFilename = filename.replace('.geojson', '.osm.json');
+  await fs.writeFile(outputFilename, JSON.stringify(osmData, null, 2), 'utf-8');
+  console.log(`Converted data saved to: ${outputFilename}`);
 }
