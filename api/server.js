@@ -1,47 +1,32 @@
 import express from 'express';
 import { validateGeoJSON } from '../validate.js';
-import { convertBatchFeatures, geojsonToOsmXml, saveToFile, saveToXmlFile } from '../o2o-cli.js'; 
+import appRoute from "./routes/app.route.js";
+import convertRoutes from "./routes/conversion.routes.js"
+
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
 app.use(express.json());
 
+const router = express.Router();
+
+
+
 // Routing
-app.post('/api/convert', async (req, res) => {
-  const { files } = req.body;
+router.get("/api", appRoute);
+router.get("/api/convert", convertRoutes);
 
-  if (!Array.isArray(files) || files.length === 0) {
-    return res.status(400).json({ error: 'No files provided for conversion.' });
-  }
 
-  try {
-    const results = [];
 
-    for (const file of files) {
-      const data = JSON.parse(file.content);
-      
-      validateGeoJSON(data);
-
-      const osmData = convertBatchFeatures(data.features);
-      const osmXmlData = geojsonToOsmXml(data.features);
-
-      await saveToFile(file.name, osmData);
-      await saveToXmlFile(file.name, osmXmlData);
-
-      results.push({
-        filename: file.name,
-        osmData: osmData,
-        osmXmlData: osmXmlData,
-      });
-    }
-
-    res.status(200).json({ message: 'Conversion successful', results });
-  } catch (error) {
-    console.error('Error during conversion:', error);
-    res.status(500).json({ error: error.message });
-  }
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
 
+
+
+
+
+ 
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
