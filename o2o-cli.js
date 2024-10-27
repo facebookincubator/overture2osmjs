@@ -3,12 +3,15 @@ import * as fs from 'node:fs/promises';
 import minimist from 'minimist';
 import pLimit from 'p-limit';
 import { validateGeoJSON } from './validate';
+import readline from 'readline';
 
 const limit = pLimit(5);
 const argv = minimist(process.argv.slice(2));
 
 const filenames = argv._;
 const outputOption = argv.output || 'both'; // Default output is 'both'
+const MAX_FILE_SIZE_MB = 100; // Max file size in MB
+const MAX_FILES = 5; // Max files to process in batch
 
 // Display help message if no filenames or `--help` flag is provided
 if (filenames.length === 0 || argv.help) {
@@ -33,9 +36,27 @@ processFilesWithBatching(filenames)
  * @param {Array} filenames - List of file paths to process.
  */
 async function processFilesWithBatching(filenames) {
+  const validFiles = [];
+
+  for (const filename of filenames) {
+    const stats = await fs.stat(filename);
+    const fileSizeInMB = stats.size / (1024 * 1024); // Convert bytes to MB
+    
+    if (fileSizeInMB > MAX_FILE_SIZE_MB) {
+      console.error(`File ${filename} exceeds the maximum size of ${MAX_FILE_SIZE_MB} MB.`);
+      // Continue processing smaller chunks of the file
+      await processLargeFile(filename);
+    } else {
+      validFiles.push(filename);
+    }
+  }
+
+  // Limit to the maximum files allowed for processing
+  const filesToProcess = validFiles.slice(0, MAX_FILES);
+
   try {
     await Promise.all(
-      filenames.map((filename) =>
+      filesToProcess.map((filename) =>
         limit(async () => {
           console.log(`Processing file: ${filename}`);
           const data = JSON.parse(await fs.readFile(filename, { encoding: 'utf-8' }));
@@ -66,6 +87,75 @@ async function processFilesWithBatching(filenames) {
   } catch (error) {
     console.error('Error during file processing:', error.message);
   }
+}
+
+/**
+ * Processes a large file in chunks of 100 MB and prompts the user to continue.
+ * @param {string} filename - The filename of the large GeoJSON file.
+ */
+async function processLargeFile(filename) {
+  const stats = await fs.stat(filename);
+  const totalSize = stats.size;
+  let offset = 0;
+
+  while (offset < totalSize) {
+    const chunkSize = Math.min(100 * 1024 * 1024, totalSize - offset); // 100 MB or remaining size
+    const fileHandle = await fs.open(filename, 'r');
+    const buffer = Buffer.alloc(chunkSize);
+    
+    await fileHandle.read(buffer, 0, chunkSize, offset);
+    await fileHandle.close();
+
+    const chunkData = JSON.parse(buffer.toString());
+    validateGeoJSON(chunkData);
+    const osmData = convertBatchFeatures(chunkData.features);
+    const osmXmlData = geojsonToOsmXml(chunkData.features);
+
+    // Output based on user preference
+    if (outputOption === 'console' || outputOption === 'both') {
+      console.log(osmData);
+    }
+
+    if (outputOption === 'xml') {
+      console.log(osmXmlData);
+    }
+
+    if (outputOption === 'file' || outputOption === 'both') {
+      await saveToFile(filename, osmData);
+    }
+
+    if (outputOption === 'xml' || outputOption === 'both') {
+      await saveToXmlFile(filename, osmXmlData);
+    }
+
+    offset += chunkSize; 
+
+    if (offset < totalSize) {
+      const continueProcessing = await promptUserForContinue();
+      if (!continueProcessing) {
+        console.log('User opted to stop processing further chunks.');
+        break;
+      }
+    }
+  }
+}
+
+/**
+ * Prompts the user to continue processing the next chunk.
+ * @returns {Promise<boolean>} - Resolves to true if the user wants to continue, otherwise false.
+ */
+async function promptUserForContinue() {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  return new Promise((resolve) => {
+    rl.question('Continue processing the next chunk? (y/n): ', (answer) => {
+      rl.close();
+      resolve(answer.toLowerCase() === 'y');
+    });
+  });
 }
 
 /**
@@ -151,5 +241,5 @@ async function saveToFile(filename, osmData) {
 async function saveToXmlFile(filename, osmXmlData) {
   const outputFilename = filename.replace('.geojson', '.osm.xml');
   await fs.writeFile(outputFilename, osmXmlData, 'utf-8');
-  console.log(`Converted data saved to: ${outputFilename}`);
+  console.log(`Converted XML data saved to: ${outputFilename}`);
 }
