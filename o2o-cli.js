@@ -7,8 +7,11 @@ import { validateGeoJSON } from './validate';
 const limit = pLimit(5);
 const argv = minimist(process.argv.slice(2));
 
-// Help message
-if (argv.help) {
+const filenames = argv._;
+const outputOption = argv.output || 'both'; // Default output is 'both'
+
+// Display help message if no filenames or `--help` flag is provided
+if (filenames.length === 0 || argv.help) {
   console.log(`
     GeoJSON to OSM Data Converter
 
@@ -17,18 +20,13 @@ if (argv.help) {
     Options:
       --output <console|file|both|xml>   Specify output method (default: both, xml for OSM XML output)
   `);
+  process.exit(0); // Exit if no files are provided
 }
 
-const filenames = argv._;
-const outputOption = argv.output || 'both'; // Default output is 'both'
-
-if (filenames.length === 0) {
-  console.log('o2o-cli: Please provide at least one file name.');
-} else {
-  processFilesWithBatching(filenames)
-    .then(() => console.log('Batch processing completed successfully.'))
-    .catch((error) => console.error('Error during batch processing:', error.message));
-}
+// Process each file in batches
+processFilesWithBatching(filenames)
+  .then(() => console.log('Batch processing completed successfully.'))
+  .catch((error) => console.error('Error during batch processing:', error.message));
 
 /**
  * Processes multiple files with batching and limited concurrency.
