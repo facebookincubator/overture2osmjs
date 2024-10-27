@@ -1,21 +1,44 @@
 import express from "express";
 import { 
-    convertGeoJSONToOSMJSON, 
-    convertGeoJSONToOSMXML, 
-    convertBatchGeoJSONToOSMJSON, 
-    convertBatchGeoJSONToOSMXML, 
-    getIndex 
-} from "../controllers/conversion.controller";
-
+    convertSingleFeatureToOsmJson,
+    convertSingleFeatureToOsmXml,
+    convertGeoJsonToOsm 
+} from "../controllers/conversion.controller.js";
 
 const router = express.Router();
 
+router.post('/batch-to-json', convertGeoJsonToOsm);
+router.post('/batch-to-xml', convertGeoJsonToOsm); 
+router.post('/json', (req, res) => {
+    const { feature } = req.body;
 
-router.get("/", getIndex);
-router.post("/json", convertGeoJSONToOSMJSON);
-router.post("/xml", convertGeoJSONToOSMXML);
-router.post("/batch/json", convertBatchGeoJSONToOSMJSON);
-router.post("/batch/xml", convertBatchGeoJSONToOSMXML);
+    if (!feature) {
+        return res.status(400).json({ error: 'No feature provided for conversion.' });
+    }
 
+    try {
+        const osmData = convertSingleFeatureToOsmJson(feature);
+        res.status(200).json({ osmData });
+    } catch (error) {
+        console.error('Error during JSON conversion:', error);
+        res.status(500).json({ error: 'An error occurred during JSON conversion.' });
+    }
+});
+
+router.post('xml', (req, res) => {
+    const { feature } = req.body;
+
+    if (!feature) {
+        return res.status(400).json({ error: 'No feature provided for conversion.' });
+    }
+
+    try {
+        const osmXmlData = convertSingleFeatureToOsmXml(feature);
+        res.status(200).json({ osmXmlData });
+    } catch (error) {
+        console.error('Error during XML conversion:', error);
+        res.status(500).json({ error: 'An error occurred during XML conversion.' });
+    }
+});
 
 export default router;

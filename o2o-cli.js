@@ -35,23 +35,26 @@ processFilesWithBatching(filenames)
  * Processes multiple files with batching and limited concurrency.
  * @param {Array} filenames - List of file paths to process.
  */
-async function processFilesWithBatching(filenames) {
+ async function processFilesWithBatching(filenames) {
   const validFiles = [];
 
   for (const filename of filenames) {
+    if (!filename.endsWith('.geojson')) {
+      console.error(`Skipping non-GeoJSON file: ${filename}`);
+      continue;
+    }
+
     const stats = await fs.stat(filename);
     const fileSizeInMB = stats.size / (1024 * 1024); // Convert bytes to MB
     
     if (fileSizeInMB > MAX_FILE_SIZE_MB) {
       console.error(`File ${filename} exceeds the maximum size of ${MAX_FILE_SIZE_MB} MB.`);
-      // Continue processing smaller chunks of the file
       await processLargeFile(filename);
     } else {
       validFiles.push(filename);
     }
   }
 
-  // Limit to the maximum files allowed for processing
   const filesToProcess = validFiles.slice(0, MAX_FILES);
 
   try {
@@ -59,35 +62,40 @@ async function processFilesWithBatching(filenames) {
       filesToProcess.map((filename) =>
         limit(async () => {
           console.log(`Processing file: ${filename}`);
-          const data = JSON.parse(await fs.readFile(filename, { encoding: 'utf-8' }));
-          validateGeoJSON(data);
+          try {
+            const data = JSON.parse(await fs.readFile(filename, { encoding: 'utf-8' }));
+            validateGeoJSON(data);
 
-          const osmData = convertBatchFeatures(data.features);
-          const osmXmlData = geojsonToOsmXml(data.features);
+            const osmData = convertBatchFeatures(data.features);
+            const osmXmlData = geojsonToOsmXml(data.features);
 
-          // Output based on user preference
-          if (outputOption === 'console' || outputOption === 'both') {
-            console.log(osmData);
-          }
+            // Output based on user preference
+            if (outputOption === 'console' || outputOption === 'both') {
+              console.log(osmData);
+            }
 
-          if (outputOption === 'xml') {
-            console.log(osmXmlData);
-          }
+            if (outputOption === 'xml') {
+              console.log(osmXmlData);
+            }
 
-          if (outputOption === 'file' || outputOption === 'both') {
-            await saveToFile(filename, osmData);
-          }
+            if (outputOption === 'file' || outputOption === 'both') {
+              await saveToFile(filename, osmData);
+            }
 
-          if (outputOption === 'xml' || outputOption === 'both') {
-            await saveToXmlFile(filename, osmXmlData);
+            if (outputOption === 'xml' || outputOption === 'both') {
+              await saveToXmlFile(filename, osmXmlData);
+            }
+          } catch (error) {
+            console.error(`Error processing file ${filename}:`, error.message);
           }
         })
       )
     );
   } catch (error) {
-    console.error('Error during file processing:', error.message);
+    console.error('Error during batch processing:', error.message);
   }
 }
+
 
 /**
  * Processes a large file in chunks of 100 MB and prompts the user to continue.

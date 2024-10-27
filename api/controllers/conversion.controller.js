@@ -1,85 +1,84 @@
-import { geojsonToOsmXml, convertToOSMXML } from "../../validate.js";
-import { convertSingleGeoJSONToOSMJSON, convertSingleGeoJSONToOSMXML } from "../../o2o-cli.js"; 
+import { validateGeoJSON } from '../../validate.js';
+import { 
+  convertBatchFeatures, 
+  geojsonToOsmXml, 
+  saveToFile, 
+  saveToXmlFile 
+} from '../../o2o-cli.js';
 
-// Index route
-export const getIndex = (req, res) => {
-  res.json({ message: "Overture to OSM Converter!!!" });
-};
+export const convertGeoJsonToOsm = async (req, res) => {
+  const { files } = req.body;
 
-// Convert single GeoJSON to OSM JSON
-export const convertGeoJSONToOSMJSON = (req, res) => {
-  try {
-    const geojson = req.body;
-    if (!geojson || !geojson.features || !Array.isArray(geojson.features)) {
-      return res.status(400).json({ error: "Invalid GeoJSON input." });
-    }
-
-    const osmData = convertSingleGeoJSONToOSMJSON(geojson.features);
-    res.json({ osmData });
-  } catch (error) {
-    console.error("Error converting GeoJSON to OSM JSON:", error);
-    res.status(500).json({ error: "Failed to convert GeoJSON to OSM JSON." });
+  if (!Array.isArray(files) || files.length === 0) {
+    return res.status(400).json({ error: 'No files provided for conversion.' });
   }
-};
 
-// Convert single GeoJSON to OSM XML
-export const convertGeoJSONToOSMXML = (req, res) => {
   try {
-    const geojson = req.body;
-    if (!geojson || !geojson.features || !Array.isArray(geojson.features)) {
-      return res.status(400).json({ error: "Invalid GeoJSON input." });
-    }
+    const results = [];
 
-    const osmXMLData = convertSingleGeoJSONToOSMXML(geojson.features);
-    res.set("Content-Type", "application/xml");
-    res.send(osmXMLData);
-  } catch (error) {
-    console.error("Error converting GeoJSON to OSM XML:", error);
-    res.status(500).json({ error: "Failed to convert GeoJSON to OSM XML." });
-  }
-};
+    for (const file of files) {
+      try {
+        const data = JSON.parse(file.content);
+        validateGeoJSON(data);
 
-// Batch convert GeoJSON to OSM JSON
-export const convertBatchGeoJSONToOSMJSON = (req, res) => {
-  try {
-    const geojsonArray = req.body.geojsonArray;
-    if (!Array.isArray(geojsonArray)) {
-      return res.status(400).json({ error: "Invalid input. Expected an array of GeoJSON objects." });
-    }
+        const osmData = convertBatchFeatures(data.features); 
+        const osmXmlData = geojsonToOsmXml(data.features);
+        
+        // Save to file (OSM JSON) and XML file
+        await saveToFile(file.name, osmData);
+        await saveToXmlFile(file.name, osmXmlData);
 
-    const results = geojsonArray.map((geojson) => {
-      if (!geojson.features || !Array.isArray(geojson.features)) {
-        return { error: "Invalid GeoJSON object." };
+        results.push({
+          filename: file.name,
+          osmData,
+          osmXmlData,
+        });
+      } catch (fileError) {
+        console.error(`Error processing file ${file.name}:`, fileError);
+        results.push({ filename: file.name, error: 'Failed to process this file.' });
       }
-      return convertSingleGeoJSONToOSMJSON(geojson.features);
-    });
+    }
 
-    res.json({ osmData: results });
+    res.status(200).json({ results });
   } catch (error) {
-    console.error("Error in batch conversion to OSM JSON:", error);
-    res.status(500).json({ error: "Failed to batch convert GeoJSON to OSM JSON." });
+    console.error('Error during conversion:', error);
+    res.status(500).json({ error: 'An error occurred during conversion.' });
   }
 };
 
-// Batch convert GeoJSON to OSM XML
-export const convertBatchGeoJSONToOSMXML = (req, res) => {
-  try {
-    const geojsonArray = req.body.geojsonArray;
-    if (!Array.isArray(geojsonArray)) {
-      return res.status(400).json({ error: "Invalid input. Expected an array of GeoJSON objects." });
+export const convertSingleFeatureToOsmJson = (feature) => {
+  return {
+    id: feature.id || generateOSMId(),
+    type: feature.geometry.type,
+    properties: feature.properties,
+  };
+};
+
+export const convertSingleFeatureToOsmXml = (feature) => {
+  const geometry = feature.geometry;
+  const properties = feature.properties || {};
+  let xmlData = '';
+
+  if (geometry.type === 'Point') {
+    xmlData += `<node id="${properties.id || generateOSMId()}" lat="${geometry.coordinates[1]}" lon="${geometry.coordinates[0]}">\n`;
+    for (const [key, value] of Object.entries(properties)) {
+      xmlData += `  <tag k="${key}" v="${value}"/>\n`;
     }
-
-    const results = geojsonArray.map((geojson) => {
-      if (!geojson.features || !Array.isArray(geojson.features)) {
-        return { error: "Invalid GeoJSON object." };
-      }
-      return convertToOSMXML(geojson.features); 
+    xmlData += '</node>\n';
+  } else if (geometry.type === 'Polygon') {
+    xmlData += `<way id="${properties.id || generateOSMId()}">\n`;
+    geometry.coordinates[0].forEach(([lon, lat]) => {
+      xmlData += `  <nd ref="${lat},${lon}"/>\n`; // Correct order: lat, lon
     });
-
-    res.set("Content-Type", "application/xml");
-    res.send(results.join("\n")); 
-  } catch (error) {
-    console.error("Error in batch conversion to OSM XML:", error);
-    res.status(500).json({ error: "Failed to batch convert GeoJSON to OSM XML." });
+    for (const [key, value] of Object.entries(properties)) {
+      xmlData += `  <tag k="${key}" v="${value}"/>\n`;
+    }
+    xmlData += '</way>\n';
   }
+
+  return xmlData;
+};
+
+const generateOSMId = () => {
+  return Math.floor(Math.random() * 1e6); 
 };
