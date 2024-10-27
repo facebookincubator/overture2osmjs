@@ -2,7 +2,7 @@
 import * as fs from 'node:fs/promises';
 import minimist from 'minimist';
 import pLimit from 'p-limit';
-import { validateGeoJSON } from './validate';
+import { validateGeoJSON } from './validate.js';
 import readline from 'readline';
 
 const limit = pLimit(5);
@@ -243,3 +243,11 @@ async function saveToXmlFile(filename, osmXmlData) {
   await fs.writeFile(outputFilename, osmXmlData, 'utf-8');
   console.log(`Converted XML data saved to: ${outputFilename}`);
 }
+
+
+export { 
+  convertBatchFeatures, 
+  geojsonToOsmXml, 
+  saveToFile, 
+  saveToXmlFile 
+};
