@@ -4,6 +4,7 @@ import minimist from 'minimist';
 import pLimit from 'p-limit';
 import { validateGeoJSON } from './validate.js';
 import readline from 'readline';
+import { overtureToOSMData } from './src/overture2osm.js';
 
 const limit = pLimit(5);
 const argv = minimist(process.argv.slice(2));
@@ -26,10 +27,16 @@ if (filenames.length === 0 || argv.help) {
   process.exit(0); // Exit if no files are provided
 }
 
+const data = JSON.parse(await fs.readFile(filenames[0], { encoding: 'utf-8' }));
+for (const feature of data.features) {
+  console.log(feature);
+  //console.log(overtureToOSMData(feature));
+}
+
 // Process each file in batches
-processFilesWithBatching(filenames)
-  .then(() => console.log('Batch processing completed successfully.'))
-  .catch((error) => console.error('Error during batch processing:', error.message));
+//processFilesWithBatching(filenames)
+//  .then(() => console.log('Batch processing completed successfully.'))
+//  .catch((error) => console.error('Error during batch processing:', error.message));
 
 /**
  * Processes multiple files with batching and limited concurrency.
