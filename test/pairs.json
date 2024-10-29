@@ -1,0 +1,65 @@
+[
+  {
+    "overture": {
+      "id": '08f1eeeb6bab2ceb0361694c2a13d727',
+      "version": 0,
+      "sources": [
+        {
+          "property": '',
+          "dataset": 'meta',
+          "record_id": '539339839608053',
+          "update_time": '2024-08-02T00:00:00.000Z',
+          "confidence": null
+        }
+      ],
+      "names": { "primary": 'Muzeul Theodor Pallady', "common": null, "rules": null },
+      "categories": {
+        "primary": 'art_museum',
+        "alternate": [ 'museum', 'modern_art_museum' ]
+      },
+      "confidence": 0.8600550964187328,
+      "websites": [ 'http://www.mnar.arts.ro/muzeul-theodor-pallady' ],
+      "socials": [ 'https://www.facebook.com/539339839608053' ],
+      "phones": [ '+40212114979' ],
+      "addresses": [
+        {
+          "freeform": 'Strada Spătarului 22',
+          "locality": 'București',
+          "postcode": '020775',
+          "region": null,
+          "country": 'RO'
+        }
+      ]
+    },
+    "osm": {
+      "@id": "node/2634652138",
+      "SIRUTA:code": "179150",
+      "addr:city": "București",
+      "addr:housenumber": "22",
+      "addr:postcode": "020775",
+      "addr:postcode:source": "Date de la Poșta Română, publicate sub Licența pentru Guvernare Deschisă v1.0 la http://date.gov.ro/organization/posta-romana",
+      "addr:street": "Strada Spătarului",
+      "check_date:opening_hours": "2024-03-05",
+      "codul_entității_muzeale": "7300211.0",
+      "description:en": "The building has functioned as a museum since 1971. It reopened in 1994 after a restoration period.",
+      "email": "national.art@art.museum.ro",
+      "fee": "yes",
+      "heritage": "2",
+      "heritage:operator": "lmi",
+      "name": "Muzeul \"Theodor Pallady\"",
+      "name:en": "\"Theodor Pallady\" Museum",
+      "opening_hours": "Apr-Sep 10:00-18:00; Oct-Mar 10:00-18:00; Mo,Tu off",
+      "phone": "021/211.49.79",
+      "ref:RO:lmi": "B-II-m-A-19723",
+      "source": "INP",
+      "source:link": "http://date.gov.ro/dataset/ghidul-muzeelor-din-romania",
+      "start_date": "1971",
+      "tourism": "museum",
+      "tourism_survey": "27.08.2013 12:01:39",
+      "website": "http://www.mnar.arts.ro/",
+      "wheelchair": "no",
+      "wikidata": "Q7781611",
+      "wikipedia": "en:Theodor Pallady Museum"
+    }
+  }
+]
