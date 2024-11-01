@@ -3,9 +3,10 @@
   "version": "0.0.1",
   "description": "A module to convert Overture data to OpenStreetMap format.",
   "type": "module",
-  "main": "src/index.js",
+  "main": "api/server.js",
   "scripts": {
-    "test": ""
+    "test": "mocha",
+    "start": "nodemon api/server.js"
   },
   "repository": {
     "type": "git",
@@ -19,10 +20,12 @@
   "homepage": "https://github.com/facebookincubator/overture2osmjs#readme",
   "devDependencies": {
     "esbuild": "^0.24.0",
-    "minimist": "^1.2.8"
+    "minimist": "^1.2.8",
+    "mocha": "^10.7.3"
   },
   "dependencies": {
-    "geojson-validation": "^1.0.2",
+    "body-parser": "^1.20.3",
+    "express": "^4.21.1",
     "p-limit": "^6.1.0"
   }
 }
