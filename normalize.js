@@ -25,8 +25,8 @@
  * @returns {string} - The normalized place name.
  */
 export const normalizePlaceName = (name) => {
-    if (!name) return '';
-    return name.trim().replace(/\s+/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+    if (!name) return "";
+    return name.trim().replace(/\s+/g, " ").replace(/\b\w/g, char => char.toUpperCase());
 };
 
 
@@ -35,17 +35,33 @@ export const normalizePlaceName = (name) => {
  * @param {string} name - The street name to normalize.
  * @returns {string} - The normalized street name.
  */
-export const normalizeStreetName = (street) => {
-    if (!street) return '';
+ export const normalizeStreetName = (street) => {
+    if (!street) return "";
+    
     const abbreviations = { 
         "St": "Street", 
+        "St.": "Street", 
         "Rd": "Road", 
         "Ave": "Avenue", 
+        "Blvd": "Boulevard",
+        "Ln": "Lane",
+        "Pkwy": "Parkway",
+        "Ct": "Court",
+        "Dr": "Drive",
+        "Terr": "Terrace",
         "Cr": "Crescent", 
-        "Cl": "Close" 
-    }; 
-    const words = street.split(' ').map(word => abbreviations[word] || word); 
-    return words.join(' ').replace(/\b\w/g, char => char.toUpperCase());
+        "Cl": "Close",
+        "Pl": "Place",
+        "Hwy": "Highway",
+        "Bvd": "Boulevard",
+    };
+
+    const words = street.split(" ").map(word => {
+        const normalizedWord = abbreviations[word] || word;
+        return normalizedWord.charAt(0).toUpperCase() + normalizedWord.slice(1).toLowerCase();
+    });
+
+    return words.join(" ").trim(); // Join words and trim whitespace
 };
 
 
@@ -55,7 +71,7 @@ export const normalizeStreetName = (street) => {
  * @returns {string} - The normalized country code.
  */
 export const normalizeCountryCode = (code) => {
-    if (!code) return '';
+    if (!code) return "";
     return code.trim().toUpperCase(); // Ensures ISO 3166-1 alpha-2 format
 };
 
@@ -66,8 +82,8 @@ export const normalizeCountryCode = (code) => {
  * @returns {string} - The normalized postal code.
  */
 export const normalizePostalCode = (postalCode) => {
-    if (!postalCode) return '';
-    return postalCode.replace(/\s+/g, ''); // Removes whitespace
+    if (!postalCode) return "";
+    return postalCode.replace(/\s+/g, ""); // Removes whitespace
 };
 
 
@@ -90,7 +106,7 @@ export const normalizeProperties = (feature) => {
     properties.postalCode = normalizePostalCode(properties.postalCode);
 
     if (properties.road) {
-        properties.highway = properties.road; // Rename 'road' to 'highway'
+        properties.highway = properties.road; // Rename "road" to "highway"
         delete properties.road;
     }
 
