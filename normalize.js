@@ -3,7 +3,7 @@
  * @param {Array} coordinates - An array of coordinate pairs.
  * @returns {Array} - An array of normalized coordinates.
  */
- const normalizeCoordinates = (coordinates) => {
+ export const normalizeCoordinates = (coordinates) => {
     if (!Array.isArray(coordinates) || coordinates.length === 0) return []; 
 
     return coordinates.map(coord => {
@@ -24,7 +24,7 @@
  * @param {string} name - The place name to normalize.
  * @returns {string} - The normalized place name.
  */
-const normalizePlaceName = (name) => {
+export const normalizePlaceName = (name) => {
     if (!name) return '';
     return name.trim().replace(/\s+/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
 };
@@ -35,7 +35,7 @@ const normalizePlaceName = (name) => {
  * @param {string} name - The street name to normalize.
  * @returns {string} - The normalized street name.
  */
-const normalizeStreetName = (street) => {
+export const normalizeStreetName = (street) => {
     if (!street) return '';
     const abbreviations = { 
         "St": "Street", 
@@ -54,7 +54,7 @@ const normalizeStreetName = (street) => {
  * @param {string} code - The country code to normalize.
  * @returns {string} - The normalized country code.
  */
-const normalizeCountryCode = (code) => {
+export const normalizeCountryCode = (code) => {
     if (!code) return '';
     return code.trim().toUpperCase(); // Ensures ISO 3166-1 alpha-2 format
 };
@@ -65,7 +65,7 @@ const normalizeCountryCode = (code) => {
  * @param {string} postalCode - The postal code to normalize.
  * @returns {string} - The normalized postal code.
  */
-const normalizePostalCode = (postalCode) => {
+export const normalizePostalCode = (postalCode) => {
     if (!postalCode) return '';
     return postalCode.replace(/\s+/g, ''); // Removes whitespace
 };

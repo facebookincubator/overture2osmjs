@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/facebookincubator/overture2osmjs#readme",
   "devDependencies": {
+    "chai": "^5.1.2",
     "esbuild": "^0.24.0",
     "minimist": "^1.2.8",
     "mocha": "^10.7.3"
