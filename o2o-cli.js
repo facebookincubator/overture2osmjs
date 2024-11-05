@@ -46,7 +46,7 @@ processFilesWithBatching(filenames)
  * Processes multiple files with batching and limited concurrency.
  * @param {Array} filenames - List of file paths to process.
  */
- async function processFilesWithBatching(filenames) {
+async function processFilesWithBatching(filenames) {
   const validFiles = [];
 
   for (const filename of filenames) {
@@ -74,8 +74,18 @@ processFilesWithBatching(filenames)
         limit(async () => {
           console.log(`Processing file: ${filename}`);
           try {
-            const data = JSON.parse(await fs.readFile(filename, { encoding: 'utf-8' }));
-            validateGeoJSON(data);
+            const content = await fs.readFile(filename, { encoding: 'utf-8' });
+            console.log(`Raw content of ${filename}:`, content); // Log raw content for debugging
+
+            let data;
+            try {
+              data = JSON.parse(content);
+              validateGeoJSON(data);
+            } catch (parseError) {
+              console.error(`Error parsing JSON from file ${filename}: ${parseError.message}`);
+              console.log('Skipping this file and continuing...');
+              return; // Skip this file and continue with others
+            }
 
             const osmData = convertBatchFeatures(data.features);
             const osmXmlData = geojsonToOsmXml(data.features);
