@@ -27,16 +27,20 @@ if (filenames.length === 0 || argv.help) {
   process.exit(0); // Exit if no files are provided
 }
 
-const data = JSON.parse(await fs.readFile(filenames[0], { encoding: 'utf-8' }));
-for (const feature of data.features) {
-  console.log(feature);
+// const data = JSON.parse(await fs.readFile(filenames[0], { encoding: 'utf-8' }));
+// console.log(await overtureToOSMData(data.features[0]));
+// console.log("Overture address: ", data.features[0].properties.addresses);
+// console.log(await overtureToOSMData(data.features[1]));
+// console.log("Overture address: ", data.features[1].properties.addresses);
+//for (const feature of data.features) {
+  //console.log(feature);
   //console.log(overtureToOSMData(feature));
-}
+//}
 
 // Process each file in batches
-//processFilesWithBatching(filenames)
-//  .then(() => console.log('Batch processing completed successfully.'))
-//  .catch((error) => console.error('Error during batch processing:', error.message));
+processFilesWithBatching(filenames)
+ .then(() => console.log('Batch processing completed successfully.'))
+ .catch((error) => console.error('Error during batch processing:', error.message));
 
 /**
  * Processes multiple files with batching and limited concurrency.
@@ -179,7 +183,7 @@ async function promptUserForContinue() {
  * @returns {Array} - Array of converted OSM data.
  */
 function convertBatchFeatures(features) {
-  return features.map((feature) => convertSingleFeature(feature));
+  return features.map((feature) => overtureToOSMData(feature));
 }
 
 /**

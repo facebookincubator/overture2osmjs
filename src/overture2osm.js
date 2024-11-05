@@ -1,4 +1,5 @@
 import osm_tag_dict from "./overture2osm.json" with { type: "json" };
+import { getNominatimAddress } from "./fetchAddresses.js";
 
 /**
  * Looks up OSM tags corresponding to Overture category from embedded dictionary
@@ -27,7 +28,7 @@ function getOSMCategoryTags (overtureCategory) {
  * @returns {object} An object containing key/value pairs corresponding to OSM tags.
  * Both the key and the value are strings.
  */
-function overtureToOSMData (feature) {
+async function overtureToOSMData (feature) {
   const props = feature.properties;
   let osm_tags = {};
 
@@ -70,6 +71,11 @@ function overtureToOSMData (feature) {
       else osm_tags.source = `Overture/${source.dataset}`;
     }
   }
+
+  const lat = feature.geometry.coordinates[1];
+  const lon = feature.geometry.coordinates[0];
+  //console.log("lat: ", lat, "lon: ", lon);
+  //console.log("Nominatim address: ", await getNominatimAddress(lat, lon));
 
   return osm_tags;
 }
