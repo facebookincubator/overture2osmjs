@@ -27,20 +27,25 @@ if (filenames.length === 0 || argv.help) {
   process.exit(0); // Exit if no files are provided
 }
 
-// const data = JSON.parse(await fs.readFile(filenames[0], { encoding: 'utf-8' }));
+const data = JSON.parse(await fs.readFile(filenames[0], { encoding: 'utf-8' }));
 // console.log(await overtureToOSMData(data.features[0]));
 // console.log("Overture address: ", data.features[0].properties.addresses);
 // console.log(await overtureToOSMData(data.features[1]));
 // console.log("Overture address: ", data.features[1].properties.addresses);
-//for (const feature of data.features) {
-  //console.log(feature);
-  //console.log(overtureToOSMData(feature));
-//}
+const addresses = [];
+for (const feature of data.features) {
+  const osm = await overtureToOSMData(feature);
+  addresses.push(osm);
+  console.log(osm);
+  await new Promise(r => setTimeout(r, 1000));
+}
+
+await fs.writeFile("addresses.json", JSON.stringify(addresses, null, 4));
 
 // Process each file in batches
-processFilesWithBatching(filenames)
- .then(() => console.log('Batch processing completed successfully.'))
- .catch((error) => console.error('Error during batch processing:', error.message));
+// processFilesWithBatching(filenames)
+//  .then(() => console.log('Batch processing completed successfully.'))
+//  .catch((error) => console.error('Error during batch processing:', error.message));
 
 /**
  * Processes multiple files with batching and limited concurrency.

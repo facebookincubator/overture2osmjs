@@ -74,10 +74,13 @@ async function overtureToOSMData (feature) {
 
   const lat = feature.geometry.coordinates[1];
   const lon = feature.geometry.coordinates[0];
-  //console.log("lat: ", lat, "lon: ", lon);
-  //console.log("Nominatim address: ", await getNominatimAddress(lat, lon));
+  console.log("lat: ", lat, "lon: ", lon);
 
-  return osm_tags;
+  return {
+    id: feature.id,
+    nominatim: await getNominatimAddress(lat, lon),
+    overture: props.addresses[0],
+  };
 }
 
 export {getOSMCategoryTags, overtureToOSMData};
