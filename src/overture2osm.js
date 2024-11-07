@@ -25,10 +25,14 @@ function getOSMCategoryTags (overtureCategory) {
  * @param {object} feature - An Overture Place-type object.
  * See https://docs.overturemaps.org/schema/reference/places/place/
  *
+ * @param {boolean} [processAddress = false] - Look up address using Nominatim API
+ * Keep this off if you're using this to process lots of features at once.
+ * Nominatim has a hard cap of 1 request per second for each client.
+ *
  * @returns {object} An object containing key/value pairs corresponding to OSM tags.
  * Both the key and the value are strings.
  */
-async function overtureToOSMData (feature) {
+async function overtureToOSMData (feature, processAddress = false) {
   const props = feature.properties;
   let osm_tags = {};
 
@@ -76,11 +80,7 @@ async function overtureToOSMData (feature) {
   const lon = feature.geometry.coordinates[0];
   console.log("lat: ", lat, "lon: ", lon);
 
-  return {
-    id: feature.id,
-    nominatim: await getNominatimAddress(lat, lon),
-    overture: props.addresses[0],
-  };
+  return {nominatim: await getNominatimAddress(lat, lon), overture: props.addresses[0]};
 }
 
 export {getOSMCategoryTags, overtureToOSMData};

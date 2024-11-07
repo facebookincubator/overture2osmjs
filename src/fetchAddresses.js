@@ -1,5 +1,5 @@
 async function getNominatimAddress(lat, lon) {
-  const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=geocodejson`;
+  const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=jsonv2`;
   const response = await fetch(url, {
     headers: {
       // as per https://nominatim.org/release-docs/latest/api/Reverse/
@@ -9,7 +9,7 @@ async function getNominatimAddress(lat, lon) {
     }
   });
   const data = await response.json();
-  return data.features[0].properties;
+  return data.address;
 }
 
 export {getNominatimAddress};
