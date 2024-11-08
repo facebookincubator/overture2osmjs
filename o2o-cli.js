@@ -4,6 +4,7 @@ import minimist from 'minimist';
 import pLimit from 'p-limit';
 import { validateGeoJSON } from './validate.js';
 import readline from 'readline';
+import { overtureToOSMData } from './src/overture2osm.js';
 
 const limit = pLimit(5);
 const argv = minimist(process.argv.slice(2));
@@ -18,19 +19,34 @@ if (filenames.length === 0 || argv.help) {
   console.log(`
     GeoJSON to OSM Data Converter
 
-    usage: o2o-cli <file.geojson> [file2.geojson] [file3.geojson]... [--output <console|file|both|xml>] 
+    usage: o2o-cli <file.geojson> [file2.geojson] [file3.geojson]... [--output <console|file|both|xml>] [-a/--address]
 
     Options:
       --output <console|file|both|xml>   Specify output method (default: both, xml for OSM XML output)
+      -a, --address                      Process addresses
   `);
   process.exit(0); // Exit if no files are provided
 }
 
-// Process each file in batches
-processFilesWithBatching(filenames)
-  .then(() => console.log('Batch processing completed successfully.'))
-  .catch((error) => console.error('Error during batch processing:', error.message));
-
+// this is moreso here for testing, TODO integrate address processing better with batch processing
+if (argv.address || argv.a) {
+   try {
+     const data = JSON.parse(await fs.readFile(filenames[0], { encoding: 'utf-8' }));
+     for (const feature of data.features) {
+       console.log(await overtureToOSMData(feature, true));
+       // sleep for a second before requesting another address
+       // nominatim might block your IP if you send requests as quickly as possible
+       await new Promise(r => setTimeout(r, 1000));
+     }
+   } catch (error) {
+     console.error(`Error processing file ${filenames[0]}:`, error.message);
+   }
+} else {
+  // Process each file in batches
+  processFilesWithBatching(filenames)
+    .then(() => console.log('Batch processing completed successfully.'))
+    .catch((error) => console.error('Error during batch processing:', error.message));
+}
 /**
  * Processes multiple files with batching and limited concurrency.
  * @param {Array} filenames - List of file paths to process.
@@ -76,7 +92,7 @@ async function processFilesWithBatching(filenames) {
               return; // Skip this file and continue with others
             }
 
-            const osmData = convertBatchFeatures(data.features);
+            const osmData = await Promise.all(convertBatchFeatures(data.features));
             const osmXmlData = geojsonToOsmXml(data.features);
 
             // Output based on user preference
@@ -182,20 +198,8 @@ async function promptUserForContinue() {
  * @returns {Array} - Array of converted OSM data.
  */
 function convertBatchFeatures(features) {
-  return features.map((feature) => convertSingleFeature(feature));
-}
-
-/**
- * Single GeoJSON feature conversion to OSM JSON format.
- * @param {object} feature - GeoJSON feature object.
- * @returns {object} - Converted OSM feature object.
- */
-function convertSingleFeature(feature) {
-  return {
-    id: feature.id || generateOSMId(),
-    type: feature.geometry.type,
-    properties: feature.properties,
-  };
+  // batch processing addresses would be very slow
+  return features.map((feature) => overtureToOSMData(feature, false));
 }
 
 /**

@@ -1,4 +1,4 @@
-import { normalizeProperties, simplifyGeometry } from './normalize.js';
+import { normalizeFeature } from './normalize.js';
 
 /**
  * Validates a GeoJSON file.
@@ -34,6 +34,7 @@ export function validateGeoJSON(geojson) {
  * @throws Error if the feature is invalid.
  */
 export function validateFeature(feature) {
+    debugger;
     if (!feature || feature.type !== 'Feature') {
         throw new Error("Invalid feature format. Each feature must have type 'Feature'.");
     }
@@ -46,35 +47,10 @@ export function validateFeature(feature) {
         throw new Error(`Feature ${feature.id || 'without ID'} has invalid or missing properties.`);
     }
 
-    if (feature.id && typeof feature.id !== 'string' && typeof feature.id !== 'number') {
+    if (!feature.id || typeof feature.id !== 'string') {
         throw new Error(`Feature ${feature.id} has an invalid ID.`);
     }
-
-    // Additional validation for specific properties
-    const requiredProperties = ['placeName', 'streetName', 'countryCode'];
-    requiredProperties.forEach(prop => {
-        if (!feature.properties[prop]) {
-            throw new Error(`Feature ${feature.id || 'without ID'} is missing essential property: ${prop}.`);
-        }
-    });
 }
-
-/**
- * Normalizes and simplifies a feature.
- * 
- * @param {object} feature - GeoJSON feature to normalize.
- * @returns {object} - Normalized feature.
- */
-const normalizeFeature = (feature) => {
-    const normalizedProperties = normalizeProperties(feature);
-    const simplifiedGeometry = simplifyGeometry(feature);
-    
-    return {
-        ...feature,
-        properties: normalizedProperties,
-        geometry: simplifiedGeometry,
-    };
-};
 
 /**
  * Geometry validation.

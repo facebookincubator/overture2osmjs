@@ -1,4 +1,5 @@
 import osm_tag_dict from "./overture2osm.json" with { type: "json" };
+import { getNominatimAddress } from "./fetchAddresses.js";
 
 /**
  * Looks up OSM tags corresponding to Overture category from embedded dictionary
@@ -24,10 +25,14 @@ function getOSMCategoryTags (overtureCategory) {
  * @param {object} feature - An Overture Place-type object.
  * See https://docs.overturemaps.org/schema/reference/places/place/
  *
+ * @param {boolean} processAddress - Look up address using Nominatim API
+ * Keep this off if you're using this to process lots of features at once.
+ * Nominatim has a hard cap of 1 request per second for each client.
+ *
  * @returns {object} An object containing key/value pairs corresponding to OSM tags.
  * Both the key and the value are strings.
  */
-function overtureToOSMData (feature) {
+async function overtureToOSMData (feature, processAddress) {
   const props = feature.properties;
   let osm_tags = {};
 
@@ -69,6 +74,12 @@ function overtureToOSMData (feature) {
       if (source.record_id) osm_tags.source = `Overture/${source.dataset}/${source.record_id}`;
       else osm_tags.source = `Overture/${source.dataset}`;
     }
+  }
+
+  if (processAddress) {
+    const lat = feature.geometry.coordinates[1];
+    const lon = feature.geometry.coordinates[0];
+    Object.assign(osm_tags, await getNominatimAddress(lat, lon));
   }
 
   return osm_tags;
