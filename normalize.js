@@ -1,25 +1,4 @@
 /**
- * Normalizes an array of coordinates by rounding them to six decimal places.
- * @param {Array} coordinates - An array of coordinate pairs.
- * @returns {Array} - An array of normalized coordinates.
- */
- export const normalizeCoordinates = (coordinates) => {
-    if (!Array.isArray(coordinates) || coordinates.length === 0) return []; 
-
-    return coordinates.map(coord => {
-        if (!Array.isArray(coord) || coord.length < 2 || !isFinite(coord[0]) || !isFinite(coord[1])) {
-            console.warn("Invalid coordinate:", coord);
-            return null; // Consider skipping invalid coordinates instead of defaulting to [0, 0]
-        }
-        return [
-            parseFloat(coord[0].toFixed(6)), // Rounds longitude
-            parseFloat(coord[1].toFixed(6))  // Rounds latitude
-        ];
-    }).filter(coord => coord !== null); // Filter out invalid coordinates
-};
-
-
-/**
  * Normalizes the place name to a standard format.
  * @param {string} name - The place name to normalize.
  * @returns {string} - The normalized place name.
@@ -131,16 +110,9 @@ export const normalizeFeature = (feature) => {
         return null; 
     }
 
-    const simplifiedGeometry = simplifyGeometry(feature); 
-    if (!simplifiedGeometry) {
-        console.warn("Simplified geometry is invalid:", simplifiedGeometry);
-        return null; 
-    }
-
     return {
         ...feature,
         properties: normalizedProperties,
-        geometry: simplifiedGeometry, 
     };
 };
 
