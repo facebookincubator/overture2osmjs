@@ -34,7 +34,6 @@ export function validateGeoJSON(geojson) {
  * @throws Error if the feature is invalid.
  */
 export function validateFeature(feature) {
-    debugger;
     if (!feature || feature.type !== 'Feature') {
         throw new Error("Invalid feature format. Each feature must have type 'Feature'.");
     }
