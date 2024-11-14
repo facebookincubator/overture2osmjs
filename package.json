@@ -7,7 +7,7 @@
   "scripts": {
     "test": "mocha",
     "start": "nodemon api/server.js",
-    "lint": ""
+    "lint": "npx eslint src/ o2o-cli.js validate.js normalize.js"
   },
   "repository": {
     "type": "git",
