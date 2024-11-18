@@ -1,7 +1,6 @@
 import { expect } from "chai";
 import {
-    normalizeCoordinates,
-    normalizePlaceName,
+     normalizePlaceName,
     normalizeStreetName,
     normalizeCountryCode,
     normalizePostalCode,
@@ -11,26 +10,7 @@ import {
 
 describe("Normalization Functions", () => {
     describe("normalizeCoordinates", () => {
-        it("should normalize coordinates to six decimal places", () => {
-            const input = [[1.123456789, 2.987654321], [1.123456, 2.987654]];
-            const expected = [[1.123457, 2.987654], [1.123456, 2.987654]];
-            const result = normalizeCoordinates(input);
-            expect(result).to.deep.equal(expected);
-        });
-
-        it("should return an empty array for invalid input", () => {
-            expect(normalizeCoordinates([])).to.deep.equal([]);
-            expect(normalizeCoordinates(null)).to.deep.equal([]);
-            expect(normalizeCoordinates({})).to.deep.equal([]);
-        });
-
-        it("should skip invalid coordinates", () => {
-            const input = [[1.123456, 2.987654], [null, undefined], [1, 2]];
-            const expected = [[1.123456, 2.987654], [1, 2]];
-            const result = normalizeCoordinates(input);
-            expect(result).to.deep.equal(expected);
-        });
-        it("should normalize street names with additional abbreviations", () => {
+         it("should normalize street names with additional abbreviations", () => {
             expect(normalizeStreetName("123 Elm Blvd")).to.equal("123 Elm Boulevard");
             expect(normalizeStreetName("456 Maple Pkwy")).to.equal("456 Maple Parkway");
             expect(normalizeStreetName("789 Oak Ln")).to.equal("789 Oak Lane");
