@@ -33,4 +33,4 @@ async function createAndTrainModel() {
     console.log('Model trained and saved!');
 }
 
-createAndTrainModel();
+createAndTrainModel()
