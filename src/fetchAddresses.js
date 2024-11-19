@@ -32,7 +32,6 @@ async function getNominatimAddress(lat, lon) {
   if (geocoding.postcode) address["addr:postcode"] = geocoding.postcode;
   if (geocoding.city) address["addr:city"] = geocoding.city;
   if (geocoding.country) address["addr:country"] = geocoding.country;
-  if (geocoding.label) address["addr:full"] = geocoding.label;
   return address;
 }
 
