@@ -115,19 +115,3 @@ export const normalizeFeature = (feature) => {
         properties: normalizedProperties,
     };
 };
-
-
-/**
- * Simplifies the geometry of the feature.
- * @param {Object} feature - The feature object containing geometry to simplify.
- * @returns {Object} - The simplified geometry object.
- */
-export const simplifyGeometry = (feature) => {
-    if (feature.geometry && feature.geometry.coordinates) {
-        feature.geometry.coordinates = normalizeCoordinates(feature.geometry.coordinates);
-        return feature.geometry; 
-    } else {
-        console.warn("Geometry or coordinates are undefined:", feature.geometry);
-        return null; 
-    }
-};
