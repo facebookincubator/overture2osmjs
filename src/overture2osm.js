@@ -44,13 +44,13 @@ async function overtureToOSMData (feature, processAddress) {
   if (primary_category && primary_category !== "structure_and_geography") {
     Object.assign(osm_tags, getOSMCategoryTags(primary_category));
   } else {
-    console.warn(`No primary category in feature with ID ${props.id}`);
+    console.warn(`No primary category in feature with ID ${feature.id}`);
   }
 
   if (props?.names?.primary) {
     osm_tags.name = props.names.primary;
   } else {
-    console.warn(`No primary name in feature with ID ${props.id}`);
+    console.warn(`No primary name in feature with ID ${feature.id}`);
   }
 
   if (props?.brand?.names?.primary) {
@@ -80,6 +80,7 @@ async function overtureToOSMData (feature, processAddress) {
     const lat = feature.geometry.coordinates[1];
     const lon = feature.geometry.coordinates[0];
     Object.assign(osm_tags, await getNominatimAddress(lat, lon));
+    if (props?.addresses?.[0]) osm_tags['addr:full'] = props.addresses[0].freeform;
   }
 
   return osm_tags;
