@@ -3,11 +3,12 @@
   "version": "0.0.1",
   "description": "A module to convert Overture data to OpenStreetMap format.",
   "type": "module",
-  "main": "api/server.js",
+  "main": "src/overture2osm.js",
   "scripts": {
     "test": "mocha",
     "start": "nodemon api/server.js",
-    "lint": "npx eslint src/ o2o-cli.js validate.js normalize.js"
+    "lint": "npx eslint src/ o2o-cli.js validate.js normalize.js",
+    "build": "esbuild src/overture2osm.js --bundle --outfile=dist/overture2osm.js"
   },
   "repository": {
     "type": "git",
