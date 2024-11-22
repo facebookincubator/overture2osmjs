@@ -8,7 +8,7 @@
     "test": "mocha",
     "start": "nodemon api/server.js",
     "lint": "npx eslint src/ o2o-cli.js validate.js normalize.js",
-    "build": "esbuild src/overture2osm.js --bundle --outfile=dist/overture2osm.js"
+    "build": "esbuild src/overture2osm.js --bundle --minify --outfile=dist/overture2osm.js"
   },
   "repository": {
     "type": "git",
