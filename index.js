@@ -1,12 +1,7 @@
-import validateConvertedAddress from "./models/use.model";
+import { loadModel, validateConvertedAddress } from './models/use.model';
 
-const convertedAddress = {
-    street_name: "Rua Espanha",
-    postcode: "62050-255",
-    city: "Sobral",
-    state: "Ceará",
-    country: "Brasil",
-    freeform: "APRAZIVEL"
-};
-
-validateConvertedAddress(convertedAddress);
+async function main() {
+    await loadModel();
+    validateConvertedAddress(convertedAddress);
+}
+main();
