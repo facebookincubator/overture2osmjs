@@ -11,9 +11,8 @@ let model;
 
 async function loadModel() {
     try {
-        model = await tf.loadLayersModel('file://./models/validateAddress.json');
-
-        console.log('Model loaded successfully.');
+        model = await tf.loadLayersModel('file://models/validateAddress.json'); 
+                console.log('Model loaded successfully.');
     } catch (error) {
         console.error('Error loading model:', error);
     }
