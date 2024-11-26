@@ -8,7 +8,8 @@
     "test": "mocha",
     "start": "nodemon api/server.js",
     "lint": "npx eslint src/ o2o-cli.js validate.js normalize.js",
-    "build": "esbuild src/overture2osm.js --bundle --minify --outfile=dist/overture2osm.js"
+    "build": "esbuild src/overture2osm.js --bundle --minify --outfile=dist/overture2osm.js",
+    "update-json": "node ./scripts/json_dict_converter.js"
   },
   "repository": {
     "type": "git",
