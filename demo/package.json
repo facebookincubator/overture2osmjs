@@ -1,0 +1,23 @@
+{
+  "name": "overture2osmjs",
+  "version": "0.0.1",
+  "description": "A module to convert Overture data to OpenStreetMap format.",
+  "type": "module",
+  "main": "src/overture2osm.js",
+  "scripts": {
+    "build": "esbuild index.js --bundle --sourcemap --outfile=dist.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/facebookincubator/overture2osmjs.git"
+  },
+  "author": "Petar Dosev",
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.24.0"
+  },
+  "dependencies": {
+    "highlight.js": "^11.10.0",
+    "maplibre-gl": "^4.7.1"
+  }
+}
