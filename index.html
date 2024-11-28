@@ -1,0 +1,48 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <title>Overture2OSM Project Demo</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Place favicon.ico in the root directory -->
+        <script type="module" src="dist.js"></script>
+        <link href="dist.css" rel="stylesheet" />
+        <style type="text/css">
+         html, body {
+             height: 100%;
+             margin: 0;
+         }
+
+         #map {
+             min-height: 100%;
+         }
+
+         pre {
+             font-size: 110%;
+             line-height: 1;
+             padding: 1.5em;
+             background-color: #dbe8b0;
+             border-radius: 30px;
+         }
+
+         .codeWrapper {
+             padding: 1em;
+             margin: 1em;
+         }
+
+         .codeParent {
+             margin-top: -2em;
+             display: flex;
+             justify-content: space-between;
+         }
+
+         .maplibregl-popup {
+             /* Needed to override built-in style */
+             max-width: unset !important;
+         }
+        </style>
+    </head>
+    <body>
+        <div id="map"></div>
+    </body>
+</html>
