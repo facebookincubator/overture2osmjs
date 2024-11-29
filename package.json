@@ -3,10 +3,13 @@
   "version": "0.0.1",
   "description": "A module to convert Overture data to OpenStreetMap format.",
   "type": "module",
-  "main": "api/server.js",
+  "main": "src/overture2osm.js",
   "scripts": {
     "test": "mocha",
-    "start": "nodemon api/server.js"
+    "start": "nodemon api/server.js",
+    "lint": "npx eslint src/ o2o-cli.js validate.js normalize.js",
+    "build": "esbuild src/overture2osm.js --bundle --minify --outfile=dist/overture2osm.js",
+    "update-json": "node ./scripts/json_dict_converter.js"
   },
   "repository": {
     "type": "git",
@@ -19,9 +22,17 @@
   },
   "homepage": "https://github.com/facebookincubator/overture2osmjs#readme",
   "devDependencies": {
+    "@eslint/js": "^9.14.0",
+    "body-parser": "^1.20.3",
     "chai": "^5.1.2",
     "esbuild": "^0.24.0",
+    "eslint": "^9.14.0",
+    "express": "^4.21.1",
+    "globals": "^15.12.0",
     "minimist": "^1.2.8",
+    "mocha": "^10.7.3",
+    "p-limit": "^6.1.0",
+    "sinon": "^19.0.2"
     "mocha": "^10.7.3"
   },
   "dependencies": {
