@@ -1,8 +1,8 @@
-import fs from 'fs';
-import brain from 'brain.js';
-import sampleData from '../sampleData/addresses.json' assert { type: 'json' };
+import fs from "fs";
+import brain from "brain.js";
+import sampleData from "../sampleData/addresses.json" assert { type: "json" };
 
-console.log('Sample Data:', sampleData);
+console.log("Sample Data:", sampleData);
 
 const vocab = [];
 if (sampleData && sampleData.length > 0) {
@@ -16,7 +16,7 @@ if (sampleData && sampleData.length > 0) {
         ];
 
         fields.forEach(field => {
-            if (field && typeof field === 'string' && field.trim() !== '') {
+            if (field && typeof field === "string" && field.trim() !== "") {
                 if (!vocab.includes(field)) {
                     vocab.push(field);
                 }
@@ -26,10 +26,10 @@ if (sampleData && sampleData.length > 0) {
 }
 
 // Log vocab to ensure it is populated correctly
-console.log('Vocabulary:', vocab);
+console.log("Vocabulary:", vocab);
 
 // Save vocab to a file to inspect later
-fs.writeFileSync('models/vocab.json', JSON.stringify(vocab));
+fs.writeFileSync("models/vocab.json", JSON.stringify(vocab));
 
 // Function to encode features
 function encodeFeature(feature, vocab) {
@@ -47,16 +47,16 @@ function normalize(value, min, max) {
 
 // Prepare training data
 function prepareTrainingData(data) {
-    const minPostcode = Math.min(...data.map(addr => parseInt(addr.overture.postcode?.replace('-', '') || 0, 10)));
-    const maxPostcode = Math.max(...data.map(addr => parseInt(addr.overture.postcode?.replace('-', '') || 0, 10)));
+    const minPostcode = Math.min(...data.map(addr => parseInt(addr.overture.postcode?.replace("-", "") || 0, 10)));
+    const maxPostcode = Math.max(...data.map(addr => parseInt(addr.overture.postcode?.replace("-", "") || 0, 10)));
 
     return data.map((address, index) => {
         const input = [
-            ...encodeFeature(address.overture.freeform || '', vocab),
-            normalize(parseInt(address.overture.postcode?.replace('-', ''), 10) || 0, minPostcode, maxPostcode),
-            ...encodeFeature(address.overture.locality || '', vocab),
-            ...encodeFeature(address.overture.region || '', vocab),
-            ...encodeFeature(address.overture.country || '', vocab),
+            ...encodeFeature(address.overture.freeform || "", vocab),
+            normalize(parseInt(address.overture.postcode?.replace("-", ""), 10) || 0, minPostcode, maxPostcode),
+            ...encodeFeature(address.overture.locality || "", vocab),
+            ...encodeFeature(address.overture.region || "", vocab),
+            ...encodeFeature(address.overture.country || "", vocab),
         ];
 
         if (input.some(isNaN)) {
@@ -72,12 +72,12 @@ function prepareTrainingData(data) {
 
 // Prepare the training data
 if (vocab.length === 0) {
-    console.error('Vocabulary is empty! Ensure sampleData has valid address fields.');
+    console.error("Vocabulary is empty! Ensure sampleData has valid address fields.");
     process.exit(1);
 }
 
 const trainingData = prepareTrainingData(sampleData);
-console.log('Prepared Training Data:', trainingData.slice(0, 3));
+console.log("Prepared Training Data:", trainingData.slice(0, 3));
 
 // Initialize the neural network
 const net = new brain.NeuralNetwork();
@@ -91,7 +91,7 @@ function saveModel(model, filePath) {
 
 // Function to train the model
 function trainModel() {
-    console.log('Training started...');
+    console.log("Training started...");
     const startTime = Date.now();
     net.train(trainingData, {
         iterations: 2000,
@@ -100,9 +100,9 @@ function trainModel() {
         learningRate: 0.01,
     });
     const endTime = Date.now();
-    console.log('Training completed!');
+    console.log("Training completed!");
     console.log(`Training took ${((endTime - startTime) / 1000).toFixed(2)} seconds.`);
-    saveModel(net, './models/validatedAddress.json');
+    saveModel(net, "./models/validatedAddress.json");
 }
 
 // Train the model
