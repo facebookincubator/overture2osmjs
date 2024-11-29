@@ -92,13 +92,16 @@ function saveModel(model, filePath) {
 // Function to train the model
 function trainModel() {
     console.log('Training started...');
+    const startTime = Date.now();
     net.train(trainingData, {
         iterations: 2000,
-        log: true, 
-        logPeriod: 100, // Log every 100 iterations
+        log: true,
+        logPeriod: 100,
         learningRate: 0.01,
     });
+    const endTime = Date.now();
     console.log('Training completed!');
+    console.log(`Training took ${((endTime - startTime) / 1000).toFixed(2)} seconds.`);
     saveModel(net, './models/validatedAddress.json');
 }
 

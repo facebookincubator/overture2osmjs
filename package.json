@@ -33,7 +33,6 @@
     "mocha": "^10.7.3",
     "p-limit": "^6.1.0",
     "sinon": "^19.0.2"
-    "mocha": "^10.7.3"
   },
   "dependencies": {
     "axios": "^1.7.8",
