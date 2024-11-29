@@ -1,28 +1,56 @@
-import * as tf from '@tensorflow/tfjs';
+import * as brain from 'brain.js';
+import { encodeFeature } from '../utils/encodeFeature';
+import fs from 'fs';
 
-function encodeFeature(feature, vocab) {
-    const encoded = Array(vocab.length).fill(0);
-    const index = vocab.indexOf(feature);
-    if (index !== -1) encoded[index] = 1;
-    return encoded;
-}
-
+let net = new brain.NeuralNetwork({
+    hiddenLayers: [10, 6],
+    activation: 'relu',
+});
 let model;
+let vocab = [];
 
-async function loadModel() {
-    try {
-        model = await tf.loadLayersModel('file://models/validateAddress.json'); 
-                console.log('Model loaded successfully.');
-    } catch (error) {
-        console.error('Error loading model:', error);
-    }
+function loadVocabulary() {
+    return new Promise((resolve, reject) => {
+        try {
+            const vocabData = fs.readFileSync('vocab.json', 'utf8');
+            vocab = JSON.parse(vocabData);
+            console.log('Vocabulary loaded successfully.');
+            resolve();
+        } catch (error) {
+            console.error('Error loading vocabulary:', error);
+            reject(error);
+        }
+    });
 }
 
+// Load the model and vocabulary
+export function loadModel() {
+    return new Promise((resolve, reject) => {
+        loadVocabulary()
+            .then(() => {
+                try {
+                    const modelJSON = fs.readFileSync('models/validatedAddress.json', 'utf8');
+                    model = JSON.parse(modelJSON);
+                    net.fromJSON(model);
+                    console.log('Model loaded successfully.');
+                    resolve();
+                } catch (error) {
+                    console.error('Error loading model:', error);
+                    reject(error);
+                }
+            })
+            .catch(reject);
+    });
+}
+
+// Preprocess the input (normalize postcode and use loaded vocab)
 function preprocessInput(address) {
-    const vocab = ['Rua Espanha', 'Sobral', 'Ceará', 'Brasil', 'APRAZIVEL'];
+    const minPostcode = Math.min(...vocab.map(addr => parseInt(addr.postcode.replace('-', ''), 10)));
+    const maxPostcode = Math.max(...vocab.map(addr => parseInt(addr.postcode.replace('-', ''), 10)));
+
     return [
         ...encodeFeature(address.street_name || '', vocab),
-        parseInt(address.postcode.replace('-', ''), 10) || 0,
+        normalize(parseInt(address.postcode.replace('-', ''), 10), minPostcode, maxPostcode),
         ...encodeFeature(address.city || '', vocab),
         ...encodeFeature(address.state || '', vocab),
         ...encodeFeature(address.country || '', vocab),
@@ -30,16 +58,21 @@ function preprocessInput(address) {
     ];
 }
 
+// Normalize function for postcode
+function normalize(value, min, max) {
+    if (max === min) return 0; // Avoid division by zero
+    return (value - min) / (max - min);
+}
+
 // Validate converted address
-export async function validateConvertedAddress(convertedAddress) {
-    if (!model) {
+export function validateConvertedAddress(convertedAddress) {
+    if (!net) {
         console.error('Model is not loaded. Call loadModel() before validation.');
         return;
     }
 
     const processedInput = preprocessInput(convertedAddress);
-    const tensorInput = tf.tensor([processedInput]); // Wrap input in an array for batch processing
-    const prediction = (await model.predict(tensorInput).data())[0]; // Extract prediction value
+    const prediction = net.run(processedInput);  // Use the model to predict
 
     if (prediction > 0.5) {
         console.log('The address is valid.');
@@ -50,7 +83,7 @@ export async function validateConvertedAddress(convertedAddress) {
     }
 }
 
-// Suggest corrections
+// Suggest corrections based on known issues
 export function suggestCorrections(address) {
     let suggestions = [];
     if (!isValidPostcode(address.postcode)) {
@@ -64,7 +97,7 @@ export function suggestCorrections(address) {
     return suggestions;
 }
 
-// Validate postcode 
+// Validate postcode format
 function isValidPostcode(postcode) {
     return /^[0-9]{5}-[0-9]{3}$/.test(postcode);
 }
@@ -76,18 +109,3 @@ function promptUserForCorrections(corrections) {
         console.log(suggestion);
     });
 }
-
-// Example address to validate
-const convertedAddress = {
-    street_name: "Rua Espanha",
-    postcode: "62050-255",
-    city: "Sobral",
-    state: "Ceará",
-    country: "Brasil",
-    freeform: "APRAZIVEL"
-};
-
-// Load the model and validate
-loadModel().then(() => {
-    validateConvertedAddress(convertedAddress);
-});
