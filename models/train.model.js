@@ -98,8 +98,8 @@ function trainModel(trainingData) {
     const trainingDuration = (endTime - startTime) / 1000;  
     console.log("Training completed.");
     console.log(`Training duration: ${trainingDuration.toFixed(2)} seconds.`);
-    saveModel(net, 'models/validatedAddress.json');
-    console.log('Model trained and saved successfully.');
+    saveModel(net, "models/validatedAddress.json");
+    console.log("Model trained and saved successfully.");
 }
 
 trainModel(trainingData);
