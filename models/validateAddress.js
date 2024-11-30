@@ -4,18 +4,23 @@ import axios from 'axios';
 
 async function getAddressFromOverture(overData) {
     const query = `${overData.freeform}, ${overData.locality}, ${overData.region}, ${overData.country}`;
-    const response = await axios.get('https://nominatim.openstreetmap.org/search', {
-        params: {
-            q: query,
-            format: 'json',
-            addressdetails: 1,
-            limit: 1,
-        },
-    });
-    return response.data;
+    try {
+        const response = await axios.get('https://nominatim.openstreetmap.org/search', {
+            params: {
+                q: query,
+                format: 'json',
+                addressdetails: 1,
+                limit: 1,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching data from OpenStreetMap:', error);
+        return [];
+    }
 }
 
-// Updated function to dynamically suggest corrections
+// Suggest corrections for missing address fields
 function suggestCorrections(address) {
     let suggestions = [];
     if (!address.street_name) {
@@ -45,27 +50,10 @@ function suggestCorrections(address) {
     return suggestions;
 }
 
-const addressToValidate = {
-    street_name: "Rua Espanha",
-    postcode: "62050-255",
-    city: "Sobral",
-    state: "Ceará",
-    country: "Brasil",
-    freeform: "APRAZIVEL",
-};
-
-async function validateAndSuggestCorrections(address) {
-    const addressData = await getAddressFromOverture(address);  // Fetch address details
-    if (!addressData || addressData.length === 0) {
-        console.log('Address not found, suggesting corrections...');
-        const corrections = suggestCorrections(address);
-        corrections.forEach(suggestion => {
-            console.log(suggestion);
-        });
-    } else {
-        console.log('Address is valid:', addressData);
-    }
+// Helper function to validate postcode format (example for Brazil)
+function isValidPostcode(postcode) {
+    const postcodePattern = /^[0-9]{5}-[0-9]{3}$/;
+    return postcodePattern.test(postcode);
 }
 
-validateAndSuggestCorrections(addressToValidate);
-
+export { getAddressFromOverture, suggestCorrections };

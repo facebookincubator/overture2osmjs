@@ -1,4 +1,4 @@
-import { loadModel, validateConvertedAddress } from './models/use.model';
+import { loadModel, validateConvertedAddress } from './models/use.model.js';
 
 async function main() {
     try {

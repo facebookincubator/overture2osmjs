@@ -1,12 +1,12 @@
 import fs from "fs";
 import brain from "brain.js";
-import sampleData from "../sampleData/addresses.json" assert { type: "json" };
+import testData from "../sampleData/testData.json" assert { type: "json" };
 
-console.log("Sample Data:", sampleData);
+console.log("Test Data:", testData);
 
 const vocab = [];
-if (sampleData && sampleData.length > 0) {
-    sampleData.forEach(address => {
+if (testData && testData.length > 0) {
+    testData.forEach(address => {
         const fields = [
             address.overture.freeform,
             address.overture.locality,
@@ -25,13 +25,10 @@ if (sampleData && sampleData.length > 0) {
     });
 }
 
-// Log vocab to ensure it is populated correctly
 console.log("Vocabulary:", vocab);
-
-// Save vocab to a file to inspect later
 fs.writeFileSync("models/vocab.json", JSON.stringify(vocab));
 
-// Function to encode features
+// Encode features
 function encodeFeature(feature, vocab) {
     const encoded = Array(vocab.length).fill(0);
     const index = vocab.indexOf(feature);
@@ -39,7 +36,7 @@ function encodeFeature(feature, vocab) {
     return encoded;
 }
 
-// Function to normalize values
+// Normalize values
 function normalize(value, min, max) {
     if (max === min) return 0; // Avoid division by zero
     return (value - min) / (max - min);
@@ -70,40 +67,39 @@ function prepareTrainingData(data) {
     });
 }
 
-// Prepare the training data
 if (vocab.length === 0) {
     console.error("Vocabulary is empty! Ensure sampleData has valid address fields.");
     process.exit(1);
 }
 
-const trainingData = prepareTrainingData(sampleData);
+const trainingData = prepareTrainingData(testData);
 console.log("Prepared Training Data:", trainingData.slice(0, 3));
 
-// Initialize the neural network
 const net = new brain.NeuralNetwork();
 
-// Function to save model
 function saveModel(model, filePath) {
     const modelJSON = model.toJSON();
     fs.writeFileSync(filePath, JSON.stringify(modelJSON));
     console.log(`Model saved to ${filePath}`);
 }
 
-// Function to train the model
-function trainModel() {
+// Train the model with Overture-OSM pairs
+function trainModel(trainingData) {
+    if (!Array.isArray(trainingData)) {
+        console.error("Invalid training data: ", trainingData);
+        return;
+    }
+
     console.log("Training started...");
-    const startTime = Date.now();
-    net.train(trainingData, {
-        iterations: 2000,
-        log: true,
-        logPeriod: 100,
-        learningRate: 0.01,
-    });
-    const endTime = Date.now();
-    console.log("Training completed!");
-    console.log(`Training took ${((endTime - startTime) / 1000).toFixed(2)} seconds.`);
-    saveModel(net, "./models/validatedAddress.json");
+
+    const startTime = Date.now();  
+    net.train(trainingData, { iterations: 10000 });
+    const endTime = Date.now();  
+    const trainingDuration = (endTime - startTime) / 1000;  
+    console.log("Training completed.");
+    console.log(`Training duration: ${trainingDuration.toFixed(2)} seconds.`);
+    saveModel(net, 'models/validatedAddress.json');
+    console.log('Model trained and saved successfully.');
 }
 
-// Train the model
-trainModel();
+trainModel(trainingData);
