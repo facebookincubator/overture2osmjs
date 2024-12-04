@@ -1,0 +1,174 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "id": "08f8011b347310c4039c1443b0fa63be",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -40.35,
+                    -3.7
+                ]
+            },
+            "properties": {
+                "categories": {
+                    "primary": "landmark_and_historical_building",
+                    "alternate": [
+                        "fountain",
+                        "monument"
+                    ]
+                },
+                "confidence": 0.265179677819083,
+                "websites": null,
+                "emails": null,
+                "socials": [
+                    "https://www.facebook.com/340529576105512"
+                ],
+                "phones": [
+                    "+558894143498"
+                ],
+                "brand": null,
+                "addresses": [
+                    {
+                        "freeform": "APRAZIVEL",
+                        "locality": "Sobral",
+                        "postcode": null,
+                        "region": "CE",
+                        "country": "BR"
+                    }
+                ],
+                "theme": "places",
+                "type": "place",
+                "version": 1,
+                "sources": [
+                    {
+                        "property": "",
+                        "dataset": "meta",
+                        "record_id": "340529576105512",
+                        "update_time": "2024-09-10T00:00:00.000Z",
+                        "confidence": null
+                    }
+                ],
+                "names": {
+                    "primary": "DIOGO PVC",
+                    "common": null,
+                    "rules": null
+                }
+            }
+        },
+        {
+            "id": "08f3f75c6c86b045038a21728ca06b23",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    25.403268,
+                    37.4314451
+                ]
+            },
+            "properties": {
+                "categories": {
+                    "primary": "hotel",
+                    "alternate": [
+                        "travel",
+                        "beach"
+                    ]
+                },
+                "confidence": 0.9589055910024873,
+                "websites": [
+                    "http://www.pietraemaremykonos.com"
+                ],
+                "emails": null,
+                "socials": [
+                    "https://www.facebook.com/235556439800068"
+                ],
+                "phones": [
+                    "+302289071152"
+                ],
+                "brand": null,
+                "addresses": [
+                    {
+                        "freeform": "Kalo Livadi beach",
+                        "locality": null,
+                        "postcode": "846 00",
+                        "region": null,
+                        "country": "GR"
+                    }
+                ],
+                "theme": "places",
+                "type": "place",
+                "version": 1,
+                "sources": [
+                    {
+                        "property": "",
+                        "dataset": "meta",
+                        "record_id": "235556439800068",
+                        "update_time": "2024-09-10T00:00:00.000Z",
+                        "confidence": null
+                    }
+                ],
+                "names": {
+                    "primary": "Pietra e Mare - Mykonos Moments",
+                    "common": null,
+                    "rules": null
+                }
+            }
+        },
+        {
+            "id": "08f19436d1860c150358e3f8a9a32082",
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -0.9032817,
+                    52.3293792
+                ]
+            },
+            "properties": {
+                "categories": {
+                    "primary": "hardware_store",
+                    "alternate": [
+                        "furniture_store"
+                    ]
+                },
+                "confidence": 0.9589055910024873,
+                "websites": null,
+                "emails": null,
+                "socials": [
+                    "https://www.facebook.com/290957851238816"
+                ],
+                "phones": [
+                    "+441604281278"
+                ],
+                "brand": null,
+                "addresses": [
+                    {
+                        "freeform": "128c Northampton Road",
+                        "locality": "Northampton",
+                        "postcode": "NN6 9BU",
+                        "region": "ENG",
+                        "country": "GB"
+                    }
+                ],
+                "theme": "places",
+                "type": "place",
+                "version": 1,
+                "sources": [
+                    {
+                        "property": "",
+                        "dataset": "meta",
+                        "record_id": "290957851238816",
+                        "update_time": "2024-09-10T00:00:00.000Z",
+                        "confidence": null
+                    }
+                ],
+                "names": {
+                    "primary": "Ace Reuse Ltd",
+                    "common": null,
+                    "rules": null
+                }
+            }
+        }
+    ]
+}
