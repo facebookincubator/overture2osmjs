@@ -2,67 +2,24 @@
 
 ## Usage
 
-`node o2o-cli.js <filename>`
-Process an Overture .geojson file. Currently reads out names of points of interest
+### Library
+You can find library distributables in `dist/`. It should be on npm soon!
 
-## **Scope Document**
+See the demo at https://facebookincubator.github.io/overture2osmjs 
 
-### **Project Summary**
-The **Overture Maps Foundation** maintains a global map dataset, including a subset of Places data that can enhance **OpenStreetMap (OSM)**. The goal of this project is to convert Overture data to match the OSM schema, enabling seamless integration.
+The source of the demo is in `demo/index.js`
 
-Existing tools include:
-- **Overture2OSM**: A JSON dictionary mapping Overture categories to OSM tags.
-- **OvertureToOSM**: A Python library that facilitates schema conversion.
+The main function is `overtureToOSMData(overtureFeature, processAddress)`. 
 
-Two challenges remain:
-1. **Address Data Conversion**: Automating the process of converting Overture's single-string addresses into OSM’s key-value format (street name, number, city, etc.).
-2. **JavaScript Integration**: Developing a JavaScript module for real-time conversion within the OSM editor (e.g., [RapidEditor](https://rapideditor.org)).
+`overtureFeature` is a [Overture Place-type feature](https://docs.overturemaps.org/schema/reference/places/place/), which will be converted to OSM tags. `processAddress` is a boolean, if set to True it will also do a best-effort conversion of the address using the Nominatim API. Converting an address will need network access and takes about half a second, while without it the processing is almost instant.
 
----
+The function is asynchronous, so the output is wrapped in a promise. It returns an object where the properties are OpenStreetMap tags. See https://wiki.openstreetmap.org/wiki/Tags for more info.
 
-### **Stakeholder Information**
-| Name               | Email               | Role                                                    |
-|--------------------|---------------------|---------------------------------------------------------|
-| Christopher Beddow | cbed@meta.com       | Data Analyst & Project Leader                           |
-| Benjamin Clark     | clarkbed@meta.com   | Rapid Editor & OSM Software Engineer (Advisor)          |
-| Peter Dosev        | pdosev@gmail.com    | MLH Fellow                                              |
-| Opeyemi R Oduyemi  | yhermii@gmail.com   | MLH Fellow                                              |
-| Alex Wikes         | aw@awilkes.com      | Pod Leader                                              |
+### Command-line Utility
+You can test the library using the CLI utility provided. It needs a recent version of `node` installed.
 
----
+You also need to run `npm install` to install its dependencies.
 
-### **Fellow Technical Onboarding**
+`node o2o-cli.js <filename> [--output <console|file|both|xml>] [-a/--address]`
+Process an Overture .geojson file. By default it will convert it to all possible formats, without address processing. The `-a` switch will turn on address processing, which is set to only process one feature per second because of Nominatim API limits.
 
-To get started, set up a local environment and explore the resources listed below to familiarize yourself with the project and its goals.
-
-#### **Key Resources**:
-- [Intro to OSM and Map Editing](https://www.youtube.com/watch?v=NQ7A6gztGfo)
-- [OvertureToOSM GitHub](https://github.com/cbeddow/overture2osm)
-- [Places Data in Overture Maps](https://docs.overturemaps.org/guides/places/)
-- [OpenStreetMap Tags](https://wiki.openstreetmap.org/wiki/Tags)
-
-#### **Starter Tasks**:
-1. **Set Up**: Request access to the repository.
-2. **Review Python Code**: Explore this Python code to understand conversion methods: [Python Conversion Code](https://gist.github.com/cbeddow/c5014f06456413a74348640b60f4fb7f).
-3. **Select Test Cities**: Choose testing areas from 10 cities across different countries with varying address systems.
-
----
-
-### **Deliverables and Timeline**
-
-| Counter | Task Description                                              | Ideal Deadline    |
-|---------|---------------------------------------------------------------|-------------------|
-| 1       | Select test cities                                             | Sep 20, 2024      |
-| 2       | Proof of concept: Data conversion (excluding addresses)        | Oct 11, 2024      |
-| 3       | Proof of concept: Address conversion using Placekey API        | Oct 18, 2024      |
-| 4       | Address conversion using geocoders (Nominatum, Pelias, etc.)   | Oct 25, 2024      |
-| 5       | Benchmarking plan for address conversion performance           | Nov 8, 2024       |
-| 6       | Test all address conversion methods and finalize the approach  | Nov 22, 2024      |
-| 7       | Complete the JavaScript module for conversion                  | Nov 29, 2024      |
-| 8       | Live demo for Overture and Meta audience                       | Dec 5, 2024       |
-
----
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for more details.
